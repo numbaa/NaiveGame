@@ -27,3 +27,16 @@
 *.exe
 *.out
 *.app
+
+# Vim file
+*.swp
+*.vim
+
+# YouCompleteMe config file
+.ycm_extra_conf.py
+
+# tag files
+tag
+tags
+TAG
+TAGS
