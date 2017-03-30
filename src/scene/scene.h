@@ -1,9 +1,16 @@
 #ifndef SCENE_H_
 #define SCENE_H_
-#include "stdincs.h"
+#include "../misc/stdincs.h"
+#include "../entity/entity.h"
+#include "../graphics/camera.h"
+#include "physicalspace.h"
+#include "background.h"
+#include <vector>
+#include <string>
+using std::shared_ptr;
 
 class Scene {
-    using EntityPool = shared_ptr<std::vector<Entity>>;
+    using EntityPool = std::vector<std::shared_ptr<Entity>>;
 private:
     void updateBackground(Camera& camera);
 public:

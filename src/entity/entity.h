@@ -1,9 +1,14 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
-#include "stdincs.h"
-#include "input.h"
-#include "graphics.h"
-#include "physics.h"
+#include "../misc/stdincs.h"
+#include "../input/input.h"
+#include "../graphics/graphics.h"
+#include "../physics/physics.h"
+#include "../scene/physicalspace.h"
+#include "../graphics/camera.h"
+#include "sprite.h"
+using std::shared_ptr;
+using std::unique_ptr;
 
 /* Entity类可以理解为 GameObject，玩家、怪物、墙、“回血区域”都是Entity，
  * 玩家和怪物是可以被杀死的，墙和“区域”是无敌的，玩家和区域重叠时产生

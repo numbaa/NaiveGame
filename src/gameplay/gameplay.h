@@ -1,11 +1,12 @@
 #ifndef GAMEPLAY_H_
 #define GAMEPLAY_H_
-#include "game.h"
-#include "input.h"
-#include "physics.h"
-#include "graphics.h"
-#include "scene.h"
-#include "entity.h"
+#include "../misc/stdincs.h"
+#include "../game/game.h"
+#include "../input/input.h"
+#include "../physics/physics.h"
+#include "../graphics/graphics.h"
+#include "../scene/scene.h"
+#include "../entity/entity.h"
 //以上这些头文件，将来可能作为 引擎 的公开头文件，放在一个地方，
 //供gameplay使用。
 
@@ -15,5 +16,16 @@ class Gameplay {
 public:
     Gameplay();
 };
+
+/* 
+ * 如果我要创建一个玩家控制的角色，可以这样做：
+ * shared_ptr<Entity> player(make_player(inp, phy, grp));
+ * 这3个参数inp phy grp分别是
+ *      shared_ptr<Input>、shared_ptr<Physics>、shared_ptr<Graphics>对象
+ * 其中的Input、Physics、Graphics是抽象类
+ * 也就是说，我可以这样使用Input类：
+ *      player->input->derived_fun1();
+ *      player->input->derived_fun2();
+ */
 
 #endif //ifndef GAMEPLAY_H_
