@@ -1,6 +1,10 @@
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
-#include "stdincs.h"
+#include "../misc/stdincs.h"
+#include "../physics/physics.h"
+#include "../graphics/camera.h"
+#include "../entity/entity.h"
+using std::shared_ptr;
 
 /* Graphics和Physics高度关联，画的东西几乎都要从Physics读取
  * Graphics实在Camera上画东西的，所以要把Camera传进来
@@ -9,7 +13,7 @@
  */
 class Graphics {
 public:
-    Graphics(shared_ptr<Physics> physics) physics_(physics) {}
+    Graphics(shared_ptr<Physics> physics) : physics_(physics) {}
     virtual void update(Entity* entity, shared_ptr<Camera> camera);
 private:
     shared_ptr<Physics>     physics_;

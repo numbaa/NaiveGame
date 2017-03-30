@@ -1,8 +1,8 @@
 #ifndef GAME_H_
 #define GAME_H_
-#include "stdincs.h"
-#include "scene.h"
-#include "entity.h"
+#include "../misc/stdincs.h"
+#include "../scene/scene.h"
+#include "../entity/entity.h"
 #include <vector>
 
 /* Game 类是游戏循环的核心，它要做的是更新active_scene_索引的那个Scene
@@ -12,7 +12,7 @@
  */
 class Game {
     //看官别被 Pool 误导了，我实在想不到好名字
-    using ScenePool = std::shared_ptr<std::vector<Scene>>;
+    using ScenePool = std::vector<std::shared_ptr<Scene>>;
 public:
     Game() : active_scene_(-1) {}
     void addScene(shared_ptr<Scene> scene);
@@ -20,10 +20,10 @@ public:
     void changeActiveScene(int32_t scene_id);
     void loop();
 private:
-    int32_t     active_scene_;
-    Camera      camera_;
-    ScenePool   scenes_;
-    Entity      player_;
+    int32_t             active_scene_;
+    Camera              camera_;
+    ScenePool           scenes_;
+    shared_ptr<Entity>  player_;
 };
 
 #endif //ifndef GAME_H_
