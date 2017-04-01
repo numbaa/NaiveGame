@@ -1,6 +1,6 @@
 #ifndef COMMAND_H_
 #define COMMAND_H_
-#include "stdincs.h"
+#include "../misc/stdincs.h"
 
 //命令类型
 typedef enum CommandType{
