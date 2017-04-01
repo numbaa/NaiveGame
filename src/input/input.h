@@ -23,15 +23,17 @@ private:
     //维护一个Command队列数据结构，update()时插入队列，然后应该有一个get()之类的
     //函数，依次取出Command，取空为止
 };
+
 class PlayerInput: public Input{
 public:
     virtual void update() override;
     virtual shared_ptr<Command> getCommand() override;
 }; 
+
 class NpcInput: public Input{
 public:
-    NpcInput();                    //在这里手动构建默认的命令队列
-    void commandAdd(Command);      //临时构造命令
+    NpcInput();  
+    void commandAdd(shared_ptr<Command>& cmd);//给NPC添加命令,AI可能需要这个接口
     virtual void update() override;
     virtual shared_ptr<Command> getCommand() override;
 private:

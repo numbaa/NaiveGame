@@ -49,6 +49,7 @@ void PlayerInput::update()
         }
     }
 }
+
 //返回值!=nullptr代表还有命令未取出
 //example:
 //auto it = getCommand();
@@ -65,3 +66,38 @@ shared_ptr<Command> PlayerInput :: getCommand(void)
     cmdque_.pop();
     return cmd;
 }
+
+NpcInput::NpcInput()
+{
+    ;
+}
+//与PLayer的区别是，前者从事件队列中读取
+//后者从从cmdinput_队列中读取命令
+void NpcInput::update()
+{
+    //read from cmdinput_
+    while(!cmdinput_.empty())
+    {
+        auto cmd_cur = cmdinput_.front();
+        cmdque_.push(cmd_cur);  //添加进去
+        cmdinput_.pop();        //释放
+    }
+}
+//得到命令，与player::getCommand一样
+shared_ptr<Command> NpcInput::getCommand()
+{
+    if(cmdque_.empty())
+        return shared_ptr <Command>();     //null
+    auto cmd = cmdque_.front();
+    cmdque_.pop();
+    return cmd;
+}
+
+//供AI 使用，需要AI自行生成命令，然后添加进来
+//这个函数先将命令放入cmdinput_队列，以保持update接
+//口的一致
+void NpcInput::commandAdd(shared_ptr<Command>& cmd)
+{
+    cmdinput_.push(cmd);
+}
+
