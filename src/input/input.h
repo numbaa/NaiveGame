@@ -1,6 +1,6 @@
 #ifndef INPUT_H_
 #define INPUT_H_
-#include "stdincs.h"
+#include "../misc/stdincs.h"
 #include "command.h"
 #include <queue>
 
