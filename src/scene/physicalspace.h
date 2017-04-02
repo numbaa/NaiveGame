@@ -1,6 +1,8 @@
 #ifndef PHYSICAL_SPACE_H_
 #define PHYSICAL_SPACE_H_
-#include "stdincs.h"
+#include "../misc/stdincs.h"
+#include "../entity/entity.h"
+using std::shared_ptr;
 
 /*
  * 这个类我没想好具体怎么实现。
@@ -9,6 +11,10 @@
  * 譬如是否透明，是否参与碰撞检测，等等。
  */
 class PhysicalSpace {
+public:
+    //TODO: Construtor
+    void addModel(shared_ptr<Entity> entity);
+    void delModel(shared_ptr<Entity> entity);
 };
 
 #endif //ifndef PHYSICAL_SPACE_H_
