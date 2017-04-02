@@ -7,7 +7,7 @@ using std::vector;
 using std::cerr;
 using std::endl;
 
-extern vector<shared_ptr<Command>> KeyBoardMap_Up;
+extern vector<shared_ptr<Command>> KeyBoardMap_Up;   
 extern vector<shared_ptr<Command>> KeyBoardMap_Down;
 
 //用作按键判断，比如我仅设置了10个键，那么之外的键就是非法的
@@ -29,7 +29,10 @@ void PlayerInput::update()
             {
                 shared_ptr <Command> cmd = KeyBoardMap_Down[event.key.keysym.sym];
                 if(cmd == nullptr)
+                {
                     cerr<<"error:PlayerInput::update()"<<endl;
+                    return ;   
+                }
                 cmdque_.push(cmd);
             }
         }
@@ -39,7 +42,10 @@ void PlayerInput::update()
             {
                 shared_ptr <Command> cmd = KeyBoardMap_Up[event.key.keysym.sym];
                 if(cmd == nullptr)
+                {
                     cerr<<"error:PlayerInput::update()"<<endl;
+                    return ;
+                }
                 cmdque_.push(cmd);
             }
         }
@@ -98,6 +104,7 @@ shared_ptr<Command> NpcInput::getCommand()
 //口的一致
 void NpcInput::commandAdd(shared_ptr<Command>& cmd)
 {
+    //cmd是否合法，在调用前保证
     cmdinput_.push(cmd);
 }
 
