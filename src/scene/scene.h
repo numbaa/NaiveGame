@@ -15,8 +15,8 @@ private:
     void finalUpdate(Camera& camera);
 public:
     //map file是一个图片文件，初始化Scene时载入图片，
-    //并将载入数据交由bg_管理，同时还要初始化相应大小的space_
-    Scene(std::string map_filename, std::string scene_name);
+    //并将载入数据交由bg_管理
+    Scene(std::string map_filename, shared_ptr<PhysicalSpace> space, std::string scene_name);
     void update(Camera& camera);
     //每次addEntity，除了要在entities_中添加外，还要在space_中添加
     void addEntity(shared_ptr<Entity> entity);
@@ -38,7 +38,7 @@ private:
  *      {
  *          entity->update(space_, camera);
  *      }
- *      updateBackground(Camera& camera);
+ *      finalUpdate(camera);
  * }
  */
 

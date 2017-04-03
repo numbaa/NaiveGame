@@ -17,6 +17,7 @@ class Game {
 public:
     Game() : active_scene_(-1) {}
     void addScene(shared_ptr<Scene> scene);
+    //switchScene(name, x, y) 中的x, y，指Player到新场景后的座标
     void switchScene(std::string scene_name, uint32_t x, uint32_t y);
     void loop();
 private:
