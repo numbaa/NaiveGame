@@ -19,10 +19,12 @@ public:
 
 class Surface {
     friend class Sprite;
+    friend class Camera;
 private:
     //提供给Sprite的接口，把自己一部分当作精灵图绘制在dest上
-    void sub_blit_to(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y);
+    void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y);
 public:
+    Surface();
     Surface(uint16_t width, uint16_t height);
     Surface(std::string picture_file);
 

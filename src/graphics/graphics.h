@@ -5,6 +5,7 @@
 #include "../graphics/camera.h"
 #include "../entity/entity.h"
 using std::shared_ptr;
+using std::unique_ptr;
 
 /* Graphics和Physics高度关联，画的东西几乎都要从Physics读取
  * Graphics实在Camera上画东西的，所以要把Camera传进来
@@ -17,6 +18,7 @@ public:
     virtual void update(Entity* entity, shared_ptr<Camera> camera);
 private:
     shared_ptr<Physics>     physics_;
+    unique_ptr<Sprite>      sprite_;
 };
 
 #endif //ifndef GRAPHICS_H_
