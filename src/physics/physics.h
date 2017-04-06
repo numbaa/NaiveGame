@@ -15,9 +15,41 @@ using std::shared_ptr;
 class Physics {
 public:
     Physics(shared_ptr<Input> input) : input_(input) {}
-    virtual void update(Entity* entity, shared_ptr<PhysicalSpace> space) = 0;
-private:
+    virtual void update(Entity& entity, shared_ptr<PhysicalSpace>& space) = 0;
+    virtual ~Physics() = default;
+protected:
+//private:
     shared_ptr<Input>   input_;
 };
+//需要等到PhysicalSpace实现后，再等进一步实现
+class PlayerPhysics: public Physics{
+    //想了想在当前的command结构下,使用friend会比较方便
+    //打破OOP的东西来了!
+    friend void infoUpdate_MOVE_ON(PlayerPhysics&,keyvalue_t);
+    friend void infoUpdate_MOVE_OFF(PlayerPhysics&,keyvalue_t); 
+    //friend void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
+    //friend void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
+public:
+    PlayerPhysics(shared_ptr<Input> input);
+    void update(Entity& entity,shared_ptr<PhysicalSpace>&space) override;
+    void setSpeed_x(uint32_t speed) { speed_x_ = speed;}
+    void setSpeed_y(uint32_t speed) { speed_y_ = speed;}
+    void setMoveStep_x(uint32_t step) { move_step_x_ = step;}
+    void setMoveStep_y(uint32_t step) { move_step_y_ = step;}
+    //画图的时候可能需要使用这些函数
+    uint32_t getPos_x(void) const { return x_;}
+    uint32_t getPos_y(void) const { return y_;}
+    DIR getDir() const { return dir_cur_;}
+private:
+    uint32_t x_;
+    uint32_t y_;
+    uint32_t speed_x_;  
+    uint32_t speed_y_;  
+    uint32_t move_step_x_ ;  //步进
+    uint32_t move_step_y_ ;
+    DIR dir_cur_ ;           //当前朝向
+};
 
+class NpcPhysice: public Physics{   //目前跟PlayerPhysics完全一样,先空着
+};
 #endif //PHYSICS_H_

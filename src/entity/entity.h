@@ -20,11 +20,7 @@ class Entity {
 public:
     Entity(shared_ptr<Input> input, shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
     void update(shared_ptr<PhysicalSpace> space, shared_ptr<Camera> camera);
-    void setX(uint32_t x);
-    void setY(uint32_t y);
     void setHealth(int32_t health);
-    uint32_t getX() const;
-    uint32_t getY() const;
     uint32_t getHealth() const;
     //...
 protected:
@@ -32,9 +28,6 @@ protected:
     shared_ptr<Physics>     physics_;
     shared_ptr<Graphics>    graphics_;
     unique_ptr<Sprite>      sprite_;
-    uint32_t                x_;
-    uint32_t                y_;
-    uint32_t                vel_;
     uint32_t                health_;
     //...
 };

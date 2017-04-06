@@ -8,4 +8,11 @@
 #include <memory>
 #include <cstdint>
 
+enum DIR{
+    dir_standby = 0,
+    dir_up,
+    dir_down,
+    dir_left,
+    dir_right
+};
 #endif //ifndef STDINCS_H_
