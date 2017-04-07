@@ -6,7 +6,6 @@
 #include "../physics/physics.h"
 #include "../scene/physicalspace.h"
 #include "../graphics/camera.h"
-#include "sprite.h"
 using std::shared_ptr;
 using std::unique_ptr;
 
