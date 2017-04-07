@@ -27,14 +27,6 @@ protected:
     shared_ptr<Input>       input_;
     shared_ptr<Physics>     physics_;
     shared_ptr<Graphics>    graphics_;
-<<<<<<< HEAD
-    //unique_ptr<Sprite>      sprite_;  //转移到Graphics里面
-    uint32_t                x_;
-    uint32_t                y_;
-    uint32_t                vel_;
-=======
-    unique_ptr<Sprite>      sprite_;
->>>>>>> physics-modify
     uint32_t                health_;
     //...
 };
