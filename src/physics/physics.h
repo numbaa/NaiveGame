@@ -52,4 +52,5 @@ private:
 
 class NpcPhysice: public Physics{   //目前跟PlayerPhysics完全一样,先空着
 };
+//...
 #endif //PHYSICS_H_
