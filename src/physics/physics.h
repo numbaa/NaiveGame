@@ -23,12 +23,6 @@ protected:
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
 class PlayerPhysics: public Physics{
-    //想了想在当前的command结构下,使用friend会比较方便
-    //打破OOP的东西来了!
-    friend void infoUpdate_MOVE_ON(PlayerPhysics&,keyvalue_t);
-    friend void infoUpdate_MOVE_OFF(PlayerPhysics&,keyvalue_t); 
-    //friend void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
-    //friend void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
 public:
     PlayerPhysics(shared_ptr<Input> input);
     void update(Entity& entity,shared_ptr<PhysicalSpace>&space) override;
@@ -48,6 +42,10 @@ private:
     uint32_t move_step_x_ ;  //步进
     uint32_t move_step_y_ ;
     DIR dir_cur_ ;           //当前朝向
+    friend void infoUpdate_MOVE_ON(keyvalue_t);
+    friend void infoUpdate_MOVE_OFF(keyvalue_t); 
+    //friend void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
+    //friend void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
 };
 
 class NpcPhysice: public Physics{   //目前跟PlayerPhysics完全一样,先空着

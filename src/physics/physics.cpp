@@ -12,45 +12,45 @@ PlayerPhysics::PlayerPhysics(shared_ptr<Input>input)
 {
     ;
 }
-void infoUpdate_MOVE_ON(PlayerPhysics& phy,keyvalue_t value)
+void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
 {
     switch (value)
     {
     case DIR_UP: 
-        phy.speed_y_ -= phy.move_step_y_;
-        phy.dir_cur_ = dir_up;
+        speed_y_ -= move_step_y_;
+        dir_cur_ = dir_up;
         break;
     case DIR_DOWN:
-        phy.speed_y_ += phy.move_step_y_;
-        phy.dir_cur_ = dir_down;
+        speed_y_ += move_step_y_;
+        dir_cur_ = dir_down;
         break;
     case DIR_LEFT:
-        phy.speed_x_ -= phy.move_step_x_;
-        phy.dir_cur_ = dir_left;
+        speed_x_ -= move_step_x_;
+        dir_cur_ = dir_left;
         break;
     case DIR_RIGHT:
-        phy.speed_x_ += phy.move_step_x_; 
-        phy.dir_cur_ = dir_right;
+        speed_x_ += move_step_x_; 
+        dir_cur_ = dir_right;
         break;
     default:break;
     }
 }
-void infoUpdate_MOVE_OFF(PlayerPhysics& phy,keyvalue_t value)
+void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
 {
     switch (value)
     {
     case DIR_UP:
     case DIR_DOWN:
-        phy.speed_y_ = 0;  //速度归0,方向保持不变
+        speed_y_ = 0;  //速度归0,方向保持不变
         break;
     case DIR_LEFT:
     case DIR_RIGHT:
-        phy.speed_x_ = 0;
+        speed_x_ = 0;
         break;
     default:break;
     } 
 } 
-/*void infoUpdate_SKILL_ON(Entity& entity,shared_ptr<PhysicalSpace>& space,PlayerPhysics& phy,keyvalue_t value)
+/*void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t value)
 {
     switch(value)
     {
@@ -60,7 +60,7 @@ void infoUpdate_MOVE_OFF(PlayerPhysics& phy,keyvalue_t value)
     default:break;
     }
 }*/
-/*void infoUpdate_SKILL_OFF(Entity& entity,shared_ptr<PhysicalSpace>& space,PlayerPhysics& phy,keyvalue_t value)
+/*void PlayerPhysics::infoUpdate_SKILL_OFF(keyvalue_t value)
 {
     switch(value)
     {
