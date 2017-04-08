@@ -34,6 +34,7 @@ public:
     uint32_t getPos_x(void) const { return x_;}
     uint32_t getPos_y(void) const { return y_;}
     DIR getDir() const { return dir_cur_;}
+    //...
 private:
     uint32_t x_;
     uint32_t y_;
@@ -42,10 +43,10 @@ private:
     uint32_t move_step_x_ ;  //步进
     uint32_t move_step_y_ ;
     DIR dir_cur_ ;           //当前朝向
-    friend void infoUpdate_MOVE_ON(keyvalue_t);
-    friend void infoUpdate_MOVE_OFF(keyvalue_t); 
-    //friend void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
-    //friend void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
+    void infoUpdate_MOVE_ON(keyvalue_t);
+    void infoUpdate_MOVE_OFF(keyvalue_t); 
+    //void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
+    //void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
 };
 
 class NpcPhysice: public Physics{   //目前跟PlayerPhysics完全一样,先空着
