@@ -15,16 +15,16 @@ class Game {
     //看官别被 Pool 误导了，我实在想不到好名字
     using ScenePool = std::vector<std::shared_ptr<Scene>>;
 public:
-    Game() : active_scene_(-1) {}
+    Game(shared_ptr<Entity> player, int16_t width=600, int16_t height=480) : player_(player), active_scene_(-1), camera_(width, height){}
     void addScene(shared_ptr<Scene> scene);
     //switchScene(name, x, y) 中的x, y，指Player到新场景后的座标
     void switchScene(std::string scene_name, uint32_t x, uint32_t y);
     void loop();
 private:
+    shared_ptr<Entity>  player_;
     int32_t             active_scene_;
     Camera              camera_;
     ScenePool           scenes_;
-    shared_ptr<Entity>  player_;
     std::map<std::string, int32_t> scenes_id_;
 };
 

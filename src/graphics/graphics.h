@@ -4,6 +4,7 @@
 #include "../physics/physics.h"
 #include "../graphics/camera.h"
 #include "../entity/entity.h"
+#include "sprite.h"
 using std::shared_ptr;
 using std::unique_ptr;
 
@@ -14,11 +15,16 @@ using std::unique_ptr;
  */
 class Graphics {
 public:
-    Graphics(shared_ptr<Physics> physics) : physics_(physics) {}
-    virtual void update(Entity* entity, shared_ptr<Camera> camera);
-private:
-    shared_ptr<Physics>     physics_;
+    Graphics();
+    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
+protected:
     unique_ptr<Sprite>      sprite_;
+};
+
+class PlayerGraphics : Graphics {
+public:
+    PlayerGraphics();
+    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
 };
 
 #endif //ifndef GRAPHICS_H_

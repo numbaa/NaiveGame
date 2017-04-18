@@ -6,7 +6,7 @@ std::string Scene::getName() const
     return name_;
 }
 
-Scene::Scene(std::string filename, shared_ptr<PhysicalSpace> space, std::string scene_name)
+Scene::Scene(std::string filename, PhysicalSpace* space, std::string scene_name)
     : bg_(std::make_shared<Background>(Background(filename))),
         space_(space),
         name_(scene_name)

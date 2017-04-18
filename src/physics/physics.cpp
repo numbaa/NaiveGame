@@ -7,10 +7,13 @@
 }   
 //limit(x_,y_);需要知道屏幕尺寸
 
-PlayerPhysics::PlayerPhysics(shared_ptr<Input>input)
-    :Physics(input),x_(0),y_(0),speed_x_(0),speed_y_(0),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_right)
+Physics::Physics()
+    : x_(0),y_(0),speed_x_(0),speed_y_(0),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_right)
+{}
+
+PlayerPhysics::PlayerPhysics()
+    : Physics()
 {
-    ;
 }
 void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
 {
@@ -70,20 +73,20 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
     default:break;
     }
 }*/
-void PlayerPhysics::update(Entity& entity ,shared_ptr<PhysicalSpace>& space)
+void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace>& space)
 {
-    shared_ptr <Command> cmd (new Command);
-    while(cmd != nullptr)  //取命令
+    //shared_ptr <Command> cmd (new Command);
+    while((auto cmd = input->getCommand()) != nullptr)  //取命令
     {
-        cmd = input_->getCommand();
+        //cmd = input->getCommand();
         keyvalue_t value = cmd->getValue();
         switch(cmd->getType())
         {
         case MOVE_ON: 
-            infoUpdate_MOVE_ON(*this,value); //传的是引用
+            infoUpdate_MOVE_ON(value); //传的是引用 //numbaa edit: 我把哪个*this删掉了
             break;
         case MOVE_OFF:
-            infoUpdate_MOVE_OFF(*this,value);
+            infoUpdate_MOVE_OFF(value);
             break;
         case SKILL_ON:
             //infoUpdate_SKILL_ON(entity,space,*this,value);

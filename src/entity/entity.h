@@ -19,14 +19,17 @@ class Entity {
 public:
     Entity(shared_ptr<Input> input, shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
     void update(shared_ptr<PhysicalSpace> space, shared_ptr<Camera> camera);
-    void setHealth(int32_t health);
-    uint32_t getHealth() const;
+    //void setHealth(uint32_t health);
+    void setX(uint32_t x) { physics_ -> setPos_x(x); }
+    void setY(uint32_t y) { physics_ -> setPos_y(y); }
+    //uint32_t getHealth() const;
+    uint32_t getX() const { return physics_ -> getPos_x(); }
+    uint32_t getY() const { return physics_ -> getPos_y(); }
     //...
 protected:
     shared_ptr<Input>       input_;
     shared_ptr<Physics>     physics_;
     shared_ptr<Graphics>    graphics_;
-    uint32_t                health_;
     //...
 };
 

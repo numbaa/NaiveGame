@@ -11,7 +11,7 @@ const int32_t FPStep = 10;//多少帧一步
 class Sprite {
 public:
     Sprite(std::string filename);
-    void blit(std::shared_ptr<Physics> phy);
+    void blit(std::shared_ptr<Physics> phy, Camera& camera);
 private:
     int32_t     frames_;
     StepState   ss_;

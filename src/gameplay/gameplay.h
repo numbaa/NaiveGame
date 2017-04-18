@@ -15,6 +15,7 @@
 class Gameplay {
 public:
     Gameplay();
+    void run();
 };
 
 /* 

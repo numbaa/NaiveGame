@@ -1,11 +1,13 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
 #include "../surface/surface.h"
+using std::unique_ptr;
 
 class Camera {
+    friend class Sprite;
 public:
     Camera(int16_t width, int16_t height);
-private:
+protected:
     Surface screen_;
     Surface pre_screen_;
 };

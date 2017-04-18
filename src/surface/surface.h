@@ -28,9 +28,9 @@ public:
     Surface(uint16_t width, uint16_t height);
     Surface(std::string picture_file);
 
-    //把source blit到本Surface的（x，y）上
-    void blit(int16_t x, int16_t y, shared_ptr<SDL_Surface> source);
-private:
+    //把自己blit到dest的(x, y)上
+    void blit(Surface& dest, int16_t x, int16_t y);
+protected:
     shared_ptr<SDL_Surface>     surface_;
 };
 

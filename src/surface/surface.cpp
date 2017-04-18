@@ -16,17 +16,17 @@ Surface::Surface(std::string picture_file)
 {
     SDL_Surface* loaded = IMG_Load(picture_file.c_str());
 
-    assert(loaded == NULL);
+    assert(loaded != NULL);
 
     surface_.reset(SDL_DisplayFormat(loaded));
 }
 
-void Surface::blit(int16_t x, int16_t y, shared_ptr<SDL_Surface> src)
+void Surface::blit(Surface& dest, int16_t x, int16_t y)
 {
     SDL_Rect offset;
     offset.x = x;
     offset.y = y;
-    SDL_BlitSurface(src.get(), NULL, surface_.get(), &offset);
+    SDL_BlitSurface(surface_.get(), NULL, dest.surface_.get(), &offset);
 }
 
 void Surface::sub_blit(int16_t src_x, int16_t src_y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y)
