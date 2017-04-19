@@ -18,7 +18,7 @@ using std::unique_ptr;
 class Entity {
 public:
     Entity(shared_ptr<Input> input, shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
-    void update(shared_ptr<PhysicalSpace> space, shared_ptr<Camera> camera);
+    void update(PhysicalSpace& space, Camera& camera);
     //void setHealth(uint32_t health);
     void setX(uint32_t x) { physics_ -> setPos_x(x); }
     void setY(uint32_t y) { physics_ -> setPos_y(y); }

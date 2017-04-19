@@ -15,7 +15,7 @@ using std::shared_ptr;
 class Physics {
 public:
     Physics();
-    virtual void update(shared_ptr<Input> input, shared_ptr<PhysicalSpace>& space) = 0;
+    virtual void update(shared_ptr<Input> input, PhysicalSpace& space) = 0;
     virtual ~Physics() = default;
 
     void setSpeed_x(uint32_t speed) { speed_x_ = speed;}
@@ -41,7 +41,7 @@ protected:
 class PlayerPhysics : public Physics {
 public:
     PlayerPhysics();
-    void update(shared_ptr<Input> input, shared_ptr<PhysicalSpace>&space) override;
+    void update(shared_ptr<Input> input, PhysicalSpace& space) override;
     //...
 private:
     void infoUpdate_MOVE_ON(keyvalue_t);

@@ -15,16 +15,19 @@ using std::unique_ptr;
  */
 class Graphics {
 public:
-    Graphics();
-    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
+    Graphics(std::string filename) : sprite_(new Sprite(filename)) {}
+    virtual void update(shared_ptr<Physics> physics, Camera& camera);
 protected:
     unique_ptr<Sprite>      sprite_;
 };
 
+
+//现在这个PlayerGraphics跟Graphics一模一样，因为我现在只想让程序跑起来
 class PlayerGraphics : Graphics {
 public:
-    PlayerGraphics();
-    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
+    PlayerGraphics(std::string filename) : Graphics(filename) {}
+    //virtual void update(shared_ptr<Physics> physics, Camera& camera);
 };
+
 
 #endif //ifndef GRAPHICS_H_

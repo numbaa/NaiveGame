@@ -22,10 +22,12 @@ class Surface {
     friend class Camera;
 private:
     //提供给Sprite的接口，把自己一部分当作精灵图绘制在dest上
-    void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y);
+    //void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y);
+    void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, Surface& dest, int16_t dest_x, int16_t dest_y);
+    Surface() {}
 public:
-    Surface();
     Surface(uint16_t width, uint16_t height);
+    template <typename Deleter=SurfaceDeleter> Surface(SDL_Surface* surface, Deleter deleter) : surface_(surface, deleter()) {}
     Surface(std::string picture_file);
 
     //把自己blit到dest的(x, y)上

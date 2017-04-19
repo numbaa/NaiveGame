@@ -4,7 +4,7 @@ shared_ptr<Entity> make_player()
 {
     shared_ptr<Input> input(new PlayerInput);
     shared_ptr<Physics> phy(new PlayerPhysics);
-    shared_ptr<Graphics> grph(new PlayerGraphics);
+    shared_ptr<Graphics> grph(new PlayerGraphics("sprite.png"));
     shared_ptr<Entity> entity(new Entity(input, phy, grph));
     return entity;
 }
