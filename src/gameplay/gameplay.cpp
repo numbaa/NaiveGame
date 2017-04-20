@@ -1,6 +1,8 @@
 #include "gameplay.h"
 #include <SDL/SDL.h>
 
+void initKeyBoardMap();
+
 shared_ptr<Entity> make_player()
 {
     shared_ptr<Input> input(new PlayerInput);
@@ -21,9 +23,10 @@ shared_ptr<Scene> make_first_scene()
 void Gameplay::run()
 {
     SDL_Init( SDL_INIT_EVERYTHING );
+    initKeyBoardMap();
     Game mygame(make_player());
     mygame.addScene(make_first_scene());
-    mygame.switchScene("first_scene", 100, 100);
+    mygame.switchScene("first_scene", 10, 10);
 
     mygame.loop();
 }
