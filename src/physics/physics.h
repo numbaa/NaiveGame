@@ -2,7 +2,7 @@
 #define PHYSICS_H_
 #include "../misc/stdincs.h"
 #include "../input/input.h"
-#include "../entity/entity.h"
+//#include "../entity/entity.h"
 #include "../scene/physicalspace.h"
 using std::shared_ptr;
 

@@ -1,8 +1,8 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 #include "../misc/stdincs.h"
-#include "../input/input.h"
-#include "../graphics/graphics.h"
+//#include "../input/input.h"
+//#include "../graphics/graphics.h"
 #include "../physics/physics.h"
 #include "../scene/physicalspace.h"
 #include "../graphics/camera.h"
@@ -15,6 +15,9 @@ using std::unique_ptr;
  * 从物理上看，玩家、怪物、墙之间会产生collision（碰撞），即他们之间不可
  * 重叠。区域是可穿越的。
  */
+class Input;
+class Graphics;
+
 class Entity {
 public:
     Entity(shared_ptr<Input> input, shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
@@ -33,13 +36,4 @@ protected:
     //...
 };
 
-/* update()的初步设想
- * PhysicalSpace由Scene管理，Camera由Game管理，所以update()时显式传入
- * void Entity::update(shared_ptr<PhysicalSpace> space, shared_ptr<Camera> camera)
- * {
- *      input_->update();
- *      physics_->update(this, space);
- *      graphics_->update(this, camera);
- * }
- */
 #endif //ifndef ENTITY_H_

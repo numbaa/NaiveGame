@@ -5,8 +5,11 @@ using std::unique_ptr;
 
 class Camera {
     friend class Sprite;
+    friend class Background;
 public:
     Camera(int16_t width, int16_t height);
+    int16_t getWidth() const { return width_; }
+    int16_t getHeight() const { return height_; }
     void refresh();
 protected:
     int16_t width_;

@@ -75,8 +75,8 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
 }*/
 void PlayerPhysics::update(shared_ptr<Input> input, PhysicalSpace& space)
 {
-    //shared_ptr <Command> cmd (new Command);
-    while((auto cmd = input->getCommand()) != nullptr)  //取命令
+    shared_ptr <Command> cmd (new Command);
+    while(( cmd = input->getCommand()) != nullptr)  //取命令
     {
         //cmd = input->getCommand();
         keyvalue_t value = cmd->getValue();

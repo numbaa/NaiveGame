@@ -1,4 +1,5 @@
 #include "gameplay.h"
+#include <SDL/SDL.h>
 
 shared_ptr<Entity> make_player()
 {
@@ -19,10 +20,15 @@ shared_ptr<Scene> make_first_scene()
 
 void Gameplay::run()
 {
+    SDL_Init( SDL_INIT_EVERYTHING );
     Game mygame(make_player());
     mygame.addScene(make_first_scene());
     mygame.switchScene("first_scene", 100, 100);
 
     mygame.loop();
+}
+
+Gameplay::Gameplay()
+{
 }
 

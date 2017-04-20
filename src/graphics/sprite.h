@@ -2,7 +2,10 @@
 #define SPRITE_H_
 #include <memory>
 #include <string>
-#include "../physics/physics.h"
+//#include "../physics/physics.h"
+#include "camera.h"
+
+class Physics;
 
 enum StepState { UP, DOWN, LEFT, RIGHT };
 

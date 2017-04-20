@@ -1,4 +1,5 @@
 #include "sprite.h"
+#include "../physics/physics.h"
 
 //这是一个假的Sprite，为了看效果，我把Sprite暂时写成一个不会变化的图
 
