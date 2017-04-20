@@ -6,7 +6,14 @@ public:
 };
 
 Camera::Camera(int16_t width, int16_t height)
-    : pre_screen_(Surface(width, height))
+    : width_(width), height_(height),
+      screen_(SDL_SetVideoMode(width_, height_, BPP, SDL_SWSURFACE), CameraDeleter()),
+      pre_screen_(Surface(width, height))
 {
-    screen_.surface_.reset(SDL_SetVideoMode(width, height, BPP, SDL_SWSURFACE), CameraDeleter());
+}
+
+//这也是个假的refresh()，摄像机位置固定不动
+void Camera::refresh()
+{
+    pre_screen_.sub_blit(0, 0, width_, height_, screen_, 0, 0);
 }

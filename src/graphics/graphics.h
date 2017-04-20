@@ -1,9 +1,8 @@
 #ifndef GRAPHICS_H_
 #define GRAPHICS_H_
 #include "../misc/stdincs.h"
-#include "../physics/physics.h"
-#include "../graphics/camera.h"
-#include "../entity/entity.h"
+//#include "../physics/physics.h"
+#include "sprite.h"
 using std::shared_ptr;
 using std::unique_ptr;
 
@@ -12,13 +11,23 @@ using std::unique_ptr;
  * 有个问题是，Graphics只读取不修改数据，所以physics这些应该应该为const，
  * 然后我就不是很确定语法上怎么搞？
  */
+class Physics;
+
 class Graphics {
 public:
-    Graphics(shared_ptr<Physics> physics) : physics_(physics) {}
-    virtual void update(Entity* entity, shared_ptr<Camera> camera);
-private:
-    shared_ptr<Physics>     physics_;
+    Graphics(std::string filename) : sprite_(new Sprite(filename)) {}
+    virtual void update(shared_ptr<Physics> physics, Camera& camera);
+protected:
     unique_ptr<Sprite>      sprite_;
 };
+
+
+//现在这个PlayerGraphics跟Graphics一模一样，因为我现在只想让程序跑起来
+class PlayerGraphics : public Graphics {
+public:
+    PlayerGraphics(std::string filename) : Graphics(filename) {}
+    //virtual void update(shared_ptr<Physics> physics, Camera& camera);
+};
+
 
 #endif //ifndef GRAPHICS_H_

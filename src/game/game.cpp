@@ -1,4 +1,7 @@
 #include "game.h"
+#include "../scene/scene.h"
+#include "../entity/entity.h"
+#include <SDL/SDL_timer.h>  //临时控制帧率
 
 void Game::addScene(shared_ptr<Scene> scene)
 {
@@ -8,7 +11,10 @@ void Game::addScene(shared_ptr<Scene> scene)
 
 void Game::switchScene(std::string name, uint32_t x, uint32_t y)
 {
-    scenes_[ active_scene_ ]->delEntity(player_);
+    if (active_scene_ != -1)
+    {
+        scenes_[ active_scene_ ]->delEntity(player_);
+    }
     active_scene_ = scenes_id_[ name ];
     player_->setX(x);
     player_->setY(y);
@@ -17,5 +23,9 @@ void Game::switchScene(std::string name, uint32_t x, uint32_t y)
 
 void Game::loop()
 {
-    scenes_[ active_scene_ ]->update(camera_);
+    while (true)
+    {
+        SDL_Delay(200); //临时控制帧率
+        scenes_[ active_scene_ ]->update(camera_);
+    }
 }

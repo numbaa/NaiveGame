@@ -31,7 +31,7 @@ void PlayerInput::update()
                 if(cmd == nullptr)
                 {
                     cerr<<"error:PlayerInput::update()"<<endl;
-                    return ;   
+                    return;
                 }
                 cmdque_.push(cmd);
             }

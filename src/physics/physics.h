@@ -2,7 +2,7 @@
 #define PHYSICS_H_
 #include "../misc/stdincs.h"
 #include "../input/input.h"
-#include "../entity/entity.h"
+//#include "../entity/entity.h"
 #include "../scene/physicalspace.h"
 using std::shared_ptr;
 
@@ -14,18 +14,10 @@ using std::shared_ptr;
  */
 class Physics {
 public:
-    Physics(shared_ptr<Input> input) : input_(input) {}
-    virtual void update(Entity& entity, shared_ptr<PhysicalSpace>& space) = 0;
+    Physics();
+    virtual void update(shared_ptr<Input> input, PhysicalSpace& space) = 0;
     virtual ~Physics() = default;
-protected:
-//private:
-    shared_ptr<Input>   input_;
-};
-//需要等到PhysicalSpace实现后，再等进一步实现
-class PlayerPhysics: public Physics{
-public:
-    PlayerPhysics(shared_ptr<Input> input);
-    void update(Entity& entity,shared_ptr<PhysicalSpace>&space) override;
+
     void setSpeed_x(uint32_t speed) { speed_x_ = speed;}
     void setSpeed_y(uint32_t speed) { speed_y_ = speed;}
     void setMoveStep_x(uint32_t step) { move_step_x_ = step;}
@@ -33,9 +25,10 @@ public:
     //画图的时候可能需要使用这些函数
     uint32_t getPos_x(void) const { return x_;}
     uint32_t getPos_y(void) const { return y_;}
+    void setPos_x(uint32_t x) { x_ = x; }
+    void setPos_y(uint32_t y) { y_ = y; }
     DIR getDir() const { return dir_cur_;}
-    //...
-private:
+protected:
     uint32_t x_;
     uint32_t y_;
     uint32_t speed_x_;  
@@ -43,8 +36,16 @@ private:
     uint32_t move_step_x_ ;  //步进
     uint32_t move_step_y_ ;
     DIR dir_cur_ ;           //当前朝向
+};
+//需要等到PhysicalSpace实现后，再等进一步实现
+class PlayerPhysics : public Physics {
+public:
+    PlayerPhysics();
+    void update(shared_ptr<Input> input, PhysicalSpace& space) override;
+    //...
+private:
     void infoUpdate_MOVE_ON(keyvalue_t);
-    void infoUpdate_MOVE_OFF(keyvalue_t); 
+    void infoUpdate_MOVE_OFF(keyvalue_t);
     //void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
     //void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
 };

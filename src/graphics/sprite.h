@@ -2,7 +2,10 @@
 #define SPRITE_H_
 #include <memory>
 #include <string>
-#include "../physics/physics.h"
+//#include "../physics/physics.h"
+#include "camera.h"
+
+class Physics;
 
 enum StepState { UP, DOWN, LEFT, RIGHT };
 
@@ -11,7 +14,7 @@ const int32_t FPStep = 10;//多少帧一步
 class Sprite {
 public:
     Sprite(std::string filename);
-    void blit(std::shared_ptr<Physics> phy);
+    void blit(std::shared_ptr<Physics> phy, Camera& camera);
 private:
     int32_t     frames_;
     StepState   ss_;
