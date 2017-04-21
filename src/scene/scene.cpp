@@ -29,6 +29,6 @@ void Scene::update(Camera& camera)
         entity->update(*space_, camera);
     }
     bg_->blit(0, 0, camera.getWidth(), camera.getHeight(), camera);//这个也是临时的
-    camera.refresh();//传什么参？目的是让主角出现在屏幕中央，似乎应该传Player，那怎么找到Player？
+    //camera.refresh();//传什么参？目的是让主角出现在屏幕中央，似乎应该传Player，那怎么找到Player？
                      //暂时这样吧，下次再改
 }

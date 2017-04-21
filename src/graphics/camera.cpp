@@ -16,4 +16,5 @@ Camera::Camera(int16_t width, int16_t height)
 void Camera::refresh()
 {
     pre_screen_.sub_blit(0, 0, width_, height_, screen_, 0, 0);
+    //pre_screen_.blit(screen_, 0, 0);
 }
