@@ -13,12 +13,13 @@ void Game::switchScene(std::string name, uint32_t x, uint32_t y)
 {
     if (active_scene_ != -1)
     {
-        scenes_[ active_scene_ ]->delEntity(player_);
+        scenes_[ active_scene_ ]->delEntity(player_); //切换场景之前删除玩家？
     }
     active_scene_ = scenes_id_[ name ];
     player_->setX(x);
     player_->setY(y);
     scenes_[ active_scene_ ]->addEntity(player_);
+    //...
 }
 
 void Game::loop()
