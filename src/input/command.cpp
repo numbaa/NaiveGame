@@ -2,7 +2,7 @@
 #include <SDL/SDL_keysym.h>
 #include <vector>
 #include <iostream>
-
+#define EVENT_NUMS (323)
 using std::shared_ptr;
 using std::vector;
 using std::make_shared;
@@ -28,8 +28,8 @@ keyvalue_t Command:: getValue(void)
 // 323是所有按键的类型数量
 // 每一项可以存放一个command
 // 目的是为了隔离实际键盘事件和命令
-vector <shared_ptr < Command> > KeyBoardMap_Up(323);      //按键释放  映射表
-vector <shared_ptr < Command> > KeyBoardMap_Down(323);    //按键按下  映射表
+vector <shared_ptr < Command> > KeyBoardMap_Up(EVENT_NUMS);      //按键释放  映射表
+vector <shared_ptr < Command> > KeyBoardMap_Down(EVENT_NUMS);    //按键按下  映射表
 
 //个性化设置按键:需要时编写
 void setKeyBoardMap()

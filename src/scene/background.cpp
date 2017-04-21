@@ -1,5 +1,4 @@
 #include "background.h"
-
 Background::Background(std::string filename)
     : surface_(filename)
 {

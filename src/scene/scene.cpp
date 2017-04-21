@@ -2,11 +2,10 @@
 #include "../entity/entity.h"
 #include "../scene/background.h"
 #include <algorithm>
-
 Scene::Scene(std::string filename, PhysicalSpace* space, std::string scene_name)
     : bg_(std::make_shared<Background>(Background(filename))),
-        space_(space),
-        name_(scene_name)
+      name_(scene_name), 
+      space_(space)
 {
 }
 

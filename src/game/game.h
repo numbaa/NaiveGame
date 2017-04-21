@@ -1,8 +1,6 @@
 #ifndef GAME_H_
 #define GAME_H_
 #include "../misc/stdincs.h"
-//#include "../scene/scene.h"
-//#include "../entity/entity.h"
 #include "../graphics/camera.h" //在类里有实例，不能只是class Camera;
 #include <vector>
 #include <map>
@@ -20,8 +18,12 @@ class Game {
     //看官别被 Pool 误导了，我实在想不到好名字
     using ScenePool = std::vector<std::shared_ptr<Scene>>;
 public:
-    Game(shared_ptr<Entity> player, int16_t width=600, int16_t height=480) : player_(player), active_scene_(-1), camera_(width, height){}
+    Game(shared_ptr<Entity> player, int16_t width=600, int16_t height=480) : player_(player),active_scene_(-1), camera_(width, height){}
     void addScene(shared_ptr<Scene> scene);
+    void setPlayer(const shared_ptr<Entity> player)
+    {
+        player_ = player;
+    }
     //switchScene(name, x, y) 中的x, y，指Player到新场景后的座标
     void switchScene(std::string scene_name, uint32_t x, uint32_t y);
     void loop();

@@ -52,6 +52,7 @@ void PlayerInput::update()
         else if(event.type == SDL_QUIT)
         {
             // sysFree();
+            exit(-1);
         }
     }
 }

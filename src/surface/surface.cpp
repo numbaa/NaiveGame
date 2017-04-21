@@ -1,6 +1,5 @@
 #include "surface.h"
 #include <cassert>
-
 Surface::Surface(uint16_t width, uint16_t height)
     : surface_(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, BPP, 0, 0, 0, 0), SurfaceDeleter())
 {
@@ -26,10 +25,12 @@ Surface::Surface(std::string picture_file)
     : surface_(nullptr, SurfaceDeleter())
 {
     SDL_Surface* loaded = IMG_Load(picture_file.c_str());
-
     assert(loaded != NULL);
-
-    surface_.reset(SDL_DisplayFormat(loaded));
+    SDL_Surface* optimizedImage = SDL_DisplayFormat(loaded);
+    SDL_FreeSurface(loaded);
+    loaded = nullptr;
+    assert(optimizedImage != NULL);
+    surface_.reset(optimizedImage);
 }
 
 void Surface::blit(Surface& dest, int16_t x, int16_t y)
