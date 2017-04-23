@@ -2,10 +2,15 @@
 #include "../entity/entity.h"
 #include "../scene/background.h"
 #include <algorithm>
-Scene::Scene(std::string filename, PhysicalSpace* space, std::string scene_name)
-    : bg_(std::make_shared<Background>(Background(filename))),
-      name_(scene_name), 
-      space_(space)
+#include <iostream>
+
+Scene::Scene(std::string filename, shared_ptr<PhysicalSpace> space, std::string scene_name)
+     :  bg_(std::make_shared<Background>(Background(filename))),
+        name_(scene_name),
+        space_(space),
+        player_(nullptr),
+        last_update_(SDL_GetTicks()),
+        last_draw_(SDL_GetTicks())
 {
 }
 
@@ -21,13 +26,40 @@ void Scene::delEntity(shared_ptr<Entity> entity)
     space_->delModel(entity);
 }
 
-void Scene::update(Camera& camera)
+void Scene::addPlayer(shared_ptr<Entity> player)
 {
-    for (auto& entity : entities_)
+    player_ = player;
+}
+
+void Scene::delPlayer()
+{
+    player_.reset();
+}
+
+void Scene::update(shared_ptr<Camera> camera)
+{
+    uint32_t curr = SDL_GetTicks();
+    uint32_t lag = curr - last_update_;
+    std::cout<<"curr: "<<curr<<"\tlast_update: "<<last_update_<<std::endl;
+    while (lag  > UPDATE_GAP)
     {
-        entity->update(*space_, camera);
+        player_->update(space_);
+        for (auto& entity : entities_)
+        {
+            entity->update(space_);
+        }
+        last_update_ = SDL_GetTicks();
+        lag -= UPDATE_GAP;
     }
-    bg_->blit(0, 0, camera.getWidth(), camera.getHeight(), camera);//这个也是临时的
-    //camera.refresh();//传什么参？目的是让主角出现在屏幕中央，似乎应该传Player，那怎么找到Player？
-                     //暂时这样吧，下次再改
+
+    if (curr-last_draw_ > DRAW_GAP)
+    {
+        player_->update(camera);
+        for (auto& entity : entities_)
+        {
+            entity->update(camera);
+        }
+        camera->refresh(player_->getX(), player_->getY());
+        last_draw_ = SDL_GetTicks();
+    }
 }

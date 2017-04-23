@@ -73,7 +73,7 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
     default:break;
     }
 }*/
-void PlayerPhysics::update(shared_ptr<Input> input, PhysicalSpace& space)
+void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> space)
 {
     shared_ptr <Command> cmd (new Command);
     while(( cmd = input->getCommand()) != nullptr)  //取命令
