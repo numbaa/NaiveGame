@@ -18,17 +18,22 @@ public:
 };
 
 class Surface {
-private:
-    Surface() {}
+    //我想写成下面这样，可是不行
+    //friend void Camera::refresh();
+    friend class Camera;
 public:
+    Surface() : surface_(nullptr) {}
     Surface(uint16_t width, uint16_t height);
     Surface(std::string picture_file);
     template <typename Deleter=SurfaceDeleter> Surface(SDL_Surface* surface, Deleter deleter) : surface_(surface, deleter) {}
 
     //把自己blit到dest的(x, y)上
     void blit(Surface& dest, int16_t x, int16_t y);
-    //void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<SDL_Surface> dest, int16_t dest_x, int16_t dest_y);
     void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, Surface& dest, int16_t dest_x, int16_t dest_y);
+    void clear();
+    void create(uint16_t width, uint16_t height);
+    uint16_t getHeight() const;
+    uint16_t getWidth() const;
 protected:
     shared_ptr<SDL_Surface>     surface_;
 };

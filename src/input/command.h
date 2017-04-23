@@ -2,6 +2,8 @@
 #define COMMAND_H_
 #include "../misc/stdincs.h"
 
+void initKeyBoardMap();
+
 //命令类型
 typedef enum CommandType{
     NOCOMMADN = 0,

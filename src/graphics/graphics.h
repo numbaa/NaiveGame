@@ -16,7 +16,7 @@ class Physics;
 class Graphics {
 public:
     Graphics(std::string filename) : sprite_(new Sprite(filename)) {}
-    virtual void update(shared_ptr<Physics> physics, Camera& camera);
+    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
 protected:
     unique_ptr<Sprite>      sprite_;
 };

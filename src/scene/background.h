@@ -8,7 +8,9 @@
 class Background {
 public:
     Background(std::string map_filename);
-    void blit(int16_t x, int16_t y, uint16_t width, uint16_t height, Camera& camera);
+    void blit(int16_t x, int16_t y, uint16_t width, uint16_t height, Surface& screen);
+    uint16_t getHeight() const;
+    uint16_t getWidth() const;
 private:
     Surface surface_;
 };

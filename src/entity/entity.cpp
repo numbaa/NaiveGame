@@ -4,10 +4,13 @@
 #include "../graphics/graphics.h"
 
 //假的update()，没有分开控制physics和graphics的帧率
-void Entity::update(PhysicalSpace& space, Camera& camera)
+void Entity::update(shared_ptr<PhysicalSpace> space)
 {
     input_->update();
     physics_->update(input_, space);
+}
+void Entity::update(shared_ptr<Camera> camera)
+{
     graphics_->update(physics_, camera);
 }
 

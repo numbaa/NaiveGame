@@ -1,6 +1,6 @@
 #include "graphics.h"
 
-void Graphics::update(shared_ptr<Physics> physics, Camera& camera)
+void Graphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> camera)
 {
     sprite_->blit(physics, camera);
 }

@@ -8,7 +8,7 @@ Sprite::Sprite(std::string filename)
 {
 }
 
-void Sprite::blit(std::shared_ptr<Physics> phy, Camera& camera)
+void Sprite::blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera)
 {
-    sf_.blit(camera.pre_screen_, phy->getPos_x(), phy->getPos_y());
+    sf_.blit(camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
 }
