@@ -43,10 +43,10 @@ void Scene::update(shared_ptr<Camera> camera)
     std::cout<<"curr: "<<curr<<"\tlast_update: "<<last_update_<<std::endl;
     while (lag  > UPDATE_GAP)
     {
-        player_->update(space_);
+        player_->updatePhysics(space_);
         for (auto& entity : entities_)
         {
-            entity->update(space_);
+            entity->updatePhysics(space_);
         }
         last_update_ = SDL_GetTicks();
         lag -= UPDATE_GAP;
@@ -54,10 +54,10 @@ void Scene::update(shared_ptr<Camera> camera)
 
     if (curr-last_draw_ > DRAW_GAP)
     {
-        player_->update(camera);
+        player_->updateImage(camera);
         for (auto& entity : entities_)
         {
-            entity->update(camera);
+            entity->updateImage(camera);
         }
         camera->refresh(player_->getX(), player_->getY());
         last_draw_ = SDL_GetTicks();

@@ -3,17 +3,18 @@
 
 shared_ptr<Entity> make_player()
 {
-    shared_ptr<Input> input(new PlayerInput);
     shared_ptr<Physics> phy(new PlayerPhysics);
-    shared_ptr<Graphics> grph(new PlayerGraphics("player.png"));
-    shared_ptr<Entity> entity(new Entity(input, phy, grph));
-    return entity;
+    shared_ptr<Graphics> grph(new PlayerGraphics("./material/player/player1.png"));
+    shared_ptr<Input> input(new PlayerInput);
+
+    shared_ptr<Entity> player(new Person(phy, grph,input));
+    return player;
 }
 
 shared_ptr<Scene> make_first_scene()
 {
     shared_ptr<PhysicalSpace> space(new PhysicalSpace(1000, 1000));
-    shared_ptr<Scene> scene(new Scene("mapfile.png", space, "first_scene"));
+    shared_ptr<Scene> scene(new Scene("./material/map/map_capture1.png", space, "first_scene"));
     return scene;
 }
 

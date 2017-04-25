@@ -21,13 +21,8 @@ void Game::switchScene(std::string name, uint32_t x, uint32_t y)
     active_scene_ = scenes_id_[ name ];
     player_->setX(x);
     player_->setY(y);
-<<<<<<< HEAD
-    scenes_[ active_scene_ ]->addEntity(player_);
-    //...
-=======
     scenes_[ active_scene_ ]->addPlayer(player_);
     camera_->changeBackground( scenes_[ active_scene_ ]->bg_ );
->>>>>>> efa33502d504ac764d96baa3f8d874570f998e52
 }
 
 void Game::loop()

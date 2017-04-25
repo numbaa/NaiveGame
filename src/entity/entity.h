@@ -23,21 +23,31 @@ class Graphics;
 
 class Entity {
 public:
-    Entity(shared_ptr<Input> input, shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
-    void update(shared_ptr<PhysicalSpace> space);
-    void update(shared_ptr<Camera> camera);
-    //void setHealth(uint32_t health);
+    Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
+    virtual void updatePhysics(shared_ptr<PhysicalSpace> space);
+    virtual void updateImage(shared_ptr<Camera> camera);
+    virtual ~Entity() = default;
     void setX(uint32_t x) { physics_ -> setPos_x(x); }
     void setY(uint32_t y) { physics_ -> setPos_y(y); }
-    //uint32_t getHealth() const;
     uint32_t getX() const { return physics_ -> getPos_x(); }
     uint32_t getY() const { return physics_ -> getPos_y(); }
     //...
 protected:
-    shared_ptr<Input>       input_;
     shared_ptr<Physics>     physics_;
     shared_ptr<Graphics>    graphics_;
     //...
+};
+
+class Person : public Entity {
+public:
+    Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics,shared_ptr<Input>input)
+     :Entity(physics,graphics),input_(input) {}
+
+    void updatePhysics(shared_ptr<PhysicalSpace> space) override;
+    void updateImage(shared_ptr<Camera> camera) override;
+
+private:
+    shared_ptr<Input> input_;
 };
 
 #endif //ifndef ENTITY_H_
