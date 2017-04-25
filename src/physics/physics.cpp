@@ -1,4 +1,6 @@
 #include "physics.h"
+#include <cassert>
+
 #define STEP_DEFAULT    (10)
 #define posUpdate() \
 {\
@@ -7,10 +9,20 @@
 }   
 //limit(x_,y_);需要知道屏幕尺寸
 
+
+
+//更新日志: Physics 不再是抽象基类
+//space还是没能利用上
+
 Physics::Physics()
     : x_(0),y_(0),speed_x_(0),speed_y_(0),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_right)
 {}
-
+void Physics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace> space)
+{
+    assert(input == nullptr);
+    posUpdate();
+    //...
+}
 PlayerPhysics::PlayerPhysics()
     : Physics()
 {

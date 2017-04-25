@@ -7,7 +7,7 @@
 void Entity::updatePhysics(shared_ptr<PhysicalSpace> space)
 {
     //input_->update();
-    //physics_->update(input_, space); //既然没有Input,physics就不会变化了
+    physics_->update(nullptr, space); //既然没有Input,physics就不会受外界影响，全靠它自己的属性进行更新
 }
 void Entity::updateImage(shared_ptr<Camera> camera)
 {
@@ -19,10 +19,7 @@ Entity::Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics)
 {
 }
 
-
-
 //Person 类
-
 void Person ::updatePhysics(shared_ptr<PhysicalSpace> space)
 {
     input_->update();   //因为有Input
