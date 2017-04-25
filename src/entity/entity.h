@@ -8,6 +8,7 @@
 #include "../graphics/camera.h"
 using std::shared_ptr;
 using std::unique_ptr;
+using std::string;
 
 const uint32_t UPDATE_GAP = 5;
 const uint32_t DRAW_GAP   = 10;
@@ -49,5 +50,4 @@ public:
 private:
     shared_ptr<Input> input_;
 };
-
 #endif //ifndef ENTITY_H_

@@ -15,7 +15,7 @@
 //space还是没能利用上
 
 Physics::Physics()
-    : x_(0),y_(0),speed_x_(0),speed_y_(0),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_right)
+    : x_(0),y_(0),speed_x_(0),speed_y_(0)
 {}
 void Physics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace> space)
 {
@@ -24,7 +24,7 @@ void Physics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace> space)
     //...
 }
 PlayerPhysics::PlayerPhysics()
-    : Physics()
+    : Physics(),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),healthy_(0)
 {
 }
 void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
@@ -65,29 +65,11 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
     default:break;
     } 
 } 
-/*void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t value)
-{
-    switch(value)
-    {
-    case SKILL1:
-    case SKILL2:
-    case SKILL3:
-    default:break;
-    }
-}*/
-/*void PlayerPhysics::infoUpdate_SKILL_OFF(keyvalue_t value)
-{
-    switch(value)
-    {
-    case SKILL1:
-    case SKILL2:
-    case SKILL3:
-    default:break;
-    }
-}*/
+
 void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> space)
 {
     shared_ptr <Command> cmd (new Command);
+    input->update();  //先更新input
     while(( cmd = input->getCommand()) != nullptr)  //取命令
     {
         //cmd = input->getCommand();
@@ -95,16 +77,14 @@ void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> sp
         switch(cmd->getType())
         {
         case MOVE_ON: 
-            infoUpdate_MOVE_ON(value); //传的是引用 //numbaa edit: 我把哪个*this删掉了
+            infoUpdate_MOVE_ON(value);
             break;
         case MOVE_OFF:
             infoUpdate_MOVE_OFF(value);
             break;
         case SKILL_ON:
-            //infoUpdate_SKILL_ON(entity,space,*this,value);
             break;
         case SKILL_OFF:
-            //infoUpdate_SKILL_OFF(entity,space,*this,value);
             break;
         default:
             break;
@@ -112,4 +92,16 @@ void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> sp
     }
     posUpdate();   //更新坐标,暂时只能写到这里
     //...//
+}
+
+SkillPhysics::SkillPhysics()
+    :owner_(""),harms_(0)
+{
+    ;
+}
+void SkillPhysics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace>space)
+{
+    assert(input == nullptr);
+    posUpdate();
+    //...
 }

@@ -2,7 +2,6 @@
 #define SPRITE_H_
 #include <memory>
 #include <string>
-//#include "../physics/physics.h"
 #include "camera.h"
 
 class Physics;
@@ -13,7 +12,7 @@ const int32_t FPStep = 10;//多少帧一步
 
 class Sprite {
 public:
-    Sprite(std::string filename);
+    Sprite(std::string path);
     void blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera);
 private:
     int32_t     frames_;

@@ -1,6 +1,8 @@
 #include "background.h"
-Background::Background(std::string filename)
-    : surface_(filename)
+
+
+Background::Background(string name) 
+    :name_(name),surface_(getPathByName(name))
 {
 }
 

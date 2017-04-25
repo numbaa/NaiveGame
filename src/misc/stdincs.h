@@ -7,10 +7,10 @@
 
 #include <memory>
 #include <cstdint>
+#include "../config/config.h"
 
 enum DIR{
-    dir_standby = 0,
-    dir_up,
+    dir_up = 0,
     dir_down,
     dir_left,
     dir_right

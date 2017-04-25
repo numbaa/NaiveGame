@@ -21,6 +21,7 @@ Surface::Surface(uint16_t width, uint16_t height)
 Surface::Surface(std::string picture_file)
     : surface_(nullptr, SurfaceDeleter())
 {
+    assert( !picture_file.empty() );
     SDL_Surface* loaded = IMG_Load(picture_file.c_str());
     assert(loaded != NULL);
     SDL_Surface* optimizedImage = SDL_DisplayFormat(loaded);

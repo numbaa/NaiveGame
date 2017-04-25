@@ -1,20 +1,27 @@
 #include "gameplay.h"
 #include <SDL/SDL.h>
 
+
+
+//用的时候一定要参考下config.h中的路径，在项目路径下建立对应文件夹
+//可能还存在错误
+
 shared_ptr<Entity> make_player()
 {
+    string player_name = "Gobulin";     //已在config.h中配置
     shared_ptr<Physics> phy(new PlayerPhysics);
-    shared_ptr<Graphics> grph(new PlayerGraphics("./material/player/player1.png"));
+    shared_ptr<Graphics> grph(new PlayerGraphics(player_name));   
     shared_ptr<Input> input(new PlayerInput);
-
     shared_ptr<Entity> player(new Person(phy, grph,input));
     return player;
 }
 
 shared_ptr<Scene> make_first_scene()
 {
+    string map_name = "chapter1";   
     shared_ptr<PhysicalSpace> space(new PhysicalSpace(1000, 1000));
-    shared_ptr<Scene> scene(new Scene("./material/map/map_capture1.png", space, "first_scene"));
+    shared_ptr<Scene> scene(new Scene(map_name, space, "first_scene")); //建议以地图名字命名场景
+
     return scene;
 }
 
