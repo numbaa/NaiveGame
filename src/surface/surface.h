@@ -34,6 +34,7 @@ public:
     void create(uint16_t width, uint16_t height);
     uint16_t getHeight() const;
     uint16_t getWidth() const;
+    void setColorKey(uint8_t r, uint8_t g, uint8_t b);
 protected:
     shared_ptr<SDL_Surface>     surface_;
 };

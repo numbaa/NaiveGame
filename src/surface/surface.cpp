@@ -84,3 +84,9 @@ void Surface::clear()
 {
     SDL_FillRect(surface_.get(), NULL, 0x00000000);
 }
+
+void Surface::setColorKey(uint8_t r, uint8_t g, uint8_t b)
+{
+    uint32_t colorkey = SDL_MapRGB(surface_->format, r, g, b);
+    SDL_SetColorKey(surface_.get(), SDL_SRCCOLORKEY, colorkey);
+}
