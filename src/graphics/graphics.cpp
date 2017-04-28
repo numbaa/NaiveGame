@@ -1,14 +1,19 @@
 #include "graphics.h"
 
+/*Graphics::Graphics(string name) 
+    :name_(name)
+{
+}*/
 void Graphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> camera)
 {
     sprite_->blit(physics, camera);
 }
-/*
-void PlayerGraphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> camaer)
+
+void PlayerGraphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> camera)
 {
+    sprite_->blit(physics,camera);
 }
-*/
+
 
 void SkillGraphics::update(shared_ptr<Physics> physics,shared_ptr<Camera> camera)
 {

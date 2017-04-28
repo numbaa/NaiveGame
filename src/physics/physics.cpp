@@ -17,14 +17,14 @@
 Physics::Physics()
     : x_(0),y_(0),speed_x_(0),speed_y_(0)
 {}
-void Physics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace> space)
+void Physics::update(shared_ptr<PhysicalSpace> space)
 {
-    assert(input == nullptr);
     posUpdate();
     //...
 }
+//PlayerInput的构造函数暂时没用参数
 PlayerPhysics::PlayerPhysics()
-    : Physics(),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),healthy_(0)
+    : Physics(),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_up),healthy_(0)
 {
 }
 void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
@@ -66,11 +66,11 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
     } 
 } 
 
-void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> space)
+void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
 {
     shared_ptr <Command> cmd (new Command);
-    input->update();  //先更新input
-    while(( cmd = input->getCommand()) != nullptr)  //取命令
+    input_.update();  //先更新input
+    while(( cmd = input_.getCommand()) != nullptr)  //取命令
     {
         //cmd = input->getCommand();
         keyvalue_t value = cmd->getValue();
@@ -95,13 +95,12 @@ void PlayerPhysics::update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> sp
 }
 
 SkillPhysics::SkillPhysics()
-    :owner_(""),harms_(0)
+    :harms_(0)
 {
     ;
 }
-void SkillPhysics::update(shared_ptr<Input> input,shared_ptr<PhysicalSpace>space)
+void SkillPhysics::update(shared_ptr<PhysicalSpace>space)
 {
-    assert(input == nullptr);
     posUpdate();
-    //...
+    //harms_属性等待PhysicalSpace
 }

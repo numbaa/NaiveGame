@@ -9,10 +9,13 @@
 shared_ptr<Entity> make_player()
 {
     string player_name = "Gobulin";     //已在config.h中配置
+
     shared_ptr<Physics> phy(new PlayerPhysics);
-    shared_ptr<Graphics> grph(new PlayerGraphics(player_name));   
-    shared_ptr<Input> input(new PlayerInput);
-    shared_ptr<Entity> player(new Person(phy, grph,input));
+
+    shared_ptr<Sprite> sprite(new Sprite(getPathByName(player_name)));
+    shared_ptr<Graphics> grph(new PlayerGraphics(player_name,sprite));   
+
+    shared_ptr<Entity> player(new Person(phy, grph));
     return player;
 }
 

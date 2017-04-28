@@ -15,7 +15,7 @@ using std::string;
 class Physics {
 public:
     Physics();
-    virtual void update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> space);
+    virtual void update(shared_ptr<PhysicalSpace> space);
     virtual ~Physics() = default;
 
     void setSpeed_x(uint32_t speed) { speed_x_ = speed;}
@@ -35,7 +35,7 @@ protected:
 class PlayerPhysics : public Physics {
 public:
     PlayerPhysics();
-    void update(shared_ptr<Input> input, shared_ptr<PhysicalSpace> space) override;
+    void update(shared_ptr<PhysicalSpace> space) override;
     void setMoveStep_x(uint32_t step) { move_step_x_ = step;}
     void setMoveStep_y(uint32_t step) { move_step_y_ = step;}
     DIR getDir() const { return dir_cur_;}
@@ -47,6 +47,7 @@ private:
     void infoUpdate_MOVE_OFF(keyvalue_t);
     //void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
     //void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
+    PlayerInput input_;
     uint32_t move_step_x_;
     uint32_t move_step_y_;
     DIR dir_cur_;
@@ -59,10 +60,9 @@ class NpcPhysics: public Physics{   //目前跟PlayerPhysics完全一样,先空�
 class SkillPhysics:public Physics {
 public:
     SkillPhysics();
-    void update(shared_ptr<Input> input,shared_ptr<PhysicalSpace> space) override; 
+    void update(shared_ptr<PhysicalSpace> space) override; 
 private:
-    string owner_;
-    //uint32_t alives_frames_; 
+    //std::vector<Sign> friends_;  //怎么识别友军,是不是该给每个entity在PhysicalSpace中确定一个唯一的标识
     int32_t harms_;
 };
 //...

@@ -15,25 +15,25 @@ class Physics;
 
 class Graphics {
 public:
-    Graphics(string name) : name_(name),sprite_(new Sprite(getPathByName(name))) {}
+    Graphics(string name,shared_ptr<Sprite>sprite) : name_(name),sprite_(sprite) {}
     virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
 protected:
     string name_;
-    unique_ptr<Sprite>      sprite_;
+    shared_ptr<Sprite>      sprite_;
 };
 
 
 //现在这个PlayerGraphics跟Graphics一模一样，因为我现在只想让程序跑起来
 class PlayerGraphics : public Graphics {
 public:
-    PlayerGraphics(string name) : Graphics(name) {}
-    //virtual void update(shared_ptr<Physics> physics, Camera& camera);
+    PlayerGraphics(string name,shared_ptr<Sprite>sprite) : Graphics(name,sprite) {}
+    virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
 private:
 };
 
 class SkillGraphics : public Graphics {
-    SkillGraphics(string name) 
-        :Graphics(name) {} 
+    SkillGraphics(string name,shared_ptr<Sprite>sprite) 
+        :Graphics(name,sprite) {} 
     void update(shared_ptr<Physics> physics,shared_ptr<Camera> camera);
 private:
     uint32_t alive_frames_; //生存时间

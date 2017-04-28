@@ -1,6 +1,7 @@
 thinking/
 bin/
 material/
+naivegame
 # Compiled Object files
 *.slo
 *.lo

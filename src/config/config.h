@@ -24,6 +24,9 @@ using std::map;
 
 
 //图片配置
+#define PLAYER_NUM_1_WIDTH          (256)
+#define PLAYER_NUM_1_HEIGHT         (512)
+#define PAAYER_NUM_1_PART           (16)
 //为了统一，效果简单的技能采用未分割的图片(所有技能效果在一张图上的)
 //效果炫酷的可以采用分割的图片
 
