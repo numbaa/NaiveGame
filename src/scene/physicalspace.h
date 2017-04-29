@@ -1,6 +1,7 @@
 #ifndef PHYSICAL_SPACE_H_
 #define PHYSICAL_SPACE_H_
 #include "../misc/stdincs.h"
+#include <vector>
 //#include "../entity/entity.h" //解决循环include问题
 using std::shared_ptr;
 
@@ -14,17 +15,29 @@ class Entity;   //头文件里没有用到Entity的函数和属性，只需要�
 
 const uint32_t BLOCK_SIZE = 12;     //每个Block大小为12*12，12这个数是暂时乱写上去的
 
-class Block {
-    Block();
-};
 class PhysicalSpace {
+
+    struct Block {
+        Block() : solid(false), harm(0), owner(nullptr) {}
+        bool                solid;
+        uint32_t            harm;
+        shared_ptr<Entity>  owner;
+    };
+
+    //tricky，因为要实现：
+    //  1. 长、宽不是BLOCK_SIZE的倍数不允许构造PhysicalSpace
+    //  2. 通过条件1后，用((width / BLOCK_SIZE), (height / BLOCK_SIZE))作为大小初始化grid_这个2维vector
+    //就需要像这样使用一个静态函数
+    static uint32_t valid(uint32_t value) { if (value % BLOCK_SIZE != 0) std::exit(-1); return value / BLOCK_SIZE; }
+    using Grid = std::vector<std::vector<Block>>;
 public:
-    PhysicalSpace(int32_t width, int32_t height);
+    PhysicalSpace(uint32_t width, uint32_t height);
     void addModel(shared_ptr<Entity> entity);
     void delModel(shared_ptr<Entity> entity);
 private:
-    int32_t width_;
-    int32_t height_;
+    uint32_t width_;
+    uint32_t height_;
+    Grid     grid_;
 };
 
 #endif //ifndef PHYSICAL_SPACE_H_

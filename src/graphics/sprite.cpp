@@ -30,7 +30,10 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
     }
 
     PictureSize psize = getPictureSizeByName(picture_name_);
-    if (dir_last != phy_derived->getDir())
+    //下面这个if意思是：如果没有速度，或者刚换方向，就画该方向的第一个图
+    if (   (phy->getSpeed_x() == 0 && phy->getSpeed_y() == 0)
+        || (dir_last != phy_derived->getDir())
+       )
     {
         dir_last = phy_derived->getDir();
         step_state = 0;

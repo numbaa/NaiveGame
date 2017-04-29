@@ -20,6 +20,8 @@ public:
 
     void setSpeed_x(uint32_t speed) { speed_x_ = speed;}
     void setSpeed_y(uint32_t speed) { speed_y_ = speed;}
+    uint32_t getSpeed_x() const { return speed_x_; }
+    uint32_t getSpeed_y() const { return speed_y_; }
     //画图的时候可能需要使用这些函数
     uint32_t getPos_x(void) const { return x_;}
     uint32_t getPos_y(void) const { return y_;}
