@@ -2,7 +2,7 @@
 
 
 Background::Background(string name) 
-    :name_(name),surface_(getPathByName(name))
+    :name_(name),surface_(name)
 {
 }
 

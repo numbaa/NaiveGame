@@ -24,7 +24,7 @@ class Surface {
 public:
     Surface() : surface_(nullptr) {}
     Surface(uint16_t width, uint16_t height);
-    Surface(std::string picture_file);
+    Surface(std::string picture_name);
     template <typename Deleter=SurfaceDeleter> Surface(SDL_Surface* surface, Deleter deleter) : surface_(surface, deleter) {}
 
     //把自己blit到dest的(x, y)上

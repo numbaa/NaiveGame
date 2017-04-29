@@ -3,20 +3,21 @@
 #include <memory>
 #include <string>
 #include "camera.h"
-
+using std::string;
 class Physics;
 
 const int32_t FPStep = 10;//多少帧一步
 
+//chentao:  Sprite持有的仍然是图片的名字，Surface持有最终的路径
 class Sprite {
 public:
-    Sprite(std::string path);
+    Sprite(string name);
     virtual void blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera);
     virtual ~Sprite() = default;
 protected:
     void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<Physics> phy, shared_ptr<Camera> camera);
     Surface     sf_;
-    std::string picture_file_;
+    string picture_name_;
 };
 
 class PersonSprite : public Sprite{

@@ -4,7 +4,7 @@
 //这是一个假的Sprite，为了看效果，我把Sprite暂时写成一个不会变化的图
 
 Sprite::Sprite(std::string filename)
-    : sf_(filename), picture_file_(filename)
+    : sf_(filename), picture_name_(filename)
 {
 }
 
@@ -29,7 +29,7 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
         exit(-1);
     }
 
-    PictureSize psize = getPictureSizeByName(picture_file_);
+    PictureSize psize = getPictureSizeByName(picture_name_);
     if (dir_last != phy_derived->getDir())
     {
         dir_last = phy_derived->getDir();

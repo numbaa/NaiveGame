@@ -18,9 +18,10 @@ Surface::Surface(uint16_t width, uint16_t height)
 {
 }
 
-Surface::Surface(std::string picture_file)
+Surface::Surface(std::string picture_name)
     : surface_(nullptr, SurfaceDeleter())
 {
+    string picture_file = getPathByName(picture_name);
     assert( !picture_file.empty() );
     SDL_Surface* loaded = IMG_Load(picture_file.c_str());
     assert(loaded != NULL);
