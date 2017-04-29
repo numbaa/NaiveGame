@@ -4,7 +4,7 @@
 //这是一个假的Sprite，为了看效果，我把Sprite暂时写成一个不会变化的图
 
 Sprite::Sprite(std::string filename)
-    : sf_(filename)
+    : sf_(filename), picture_file_(filename)
 {
 }
 
@@ -13,19 +13,42 @@ void Sprite::blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera)
     sf_.blit(camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
 }
 
+void Sprite::sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<Physics> phy, shared_ptr<Camera> camera)
+{
+    sf_.sub_blit(x, y, w, h, camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
+}
+
 void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
 {
     static DIR dir_last = dir_up;
-    //static uint32_t pos_x_last = 0,pos_y_last = 0;
+    static int32_t step_state = 0;  //一个行走方向四张图，这个变量确定是哪张图
+    static int32_t step_frames = 0; //一张图持续 FPStep帧，这个变量确定到了第几帧
     PlayerPhysics* phy_derived = nullptr; 
     if( !(phy_derived = dynamic_cast<PlayerPhysics*> (phy.get())))
     {
         exit(-1);
     }
-    if(dir_last != phy_derived->getDir())
+
+    PictureSize psize = getPictureSizeByName(picture_file_);
+    if (dir_last != phy_derived->getDir())
     {
         dir_last = phy_derived->getDir();
-        //需要知道尺寸 
+        step_state = 0;
+        step_frames = 0;
+        //int16_t x = (psize.width_ / 4) * step_state;
+        int16_t x = step_state;
+        int16_t y = (psize.height_ / 4) * dir_last;    //这里我假设一列图从上到下顺序，
+                                                        //跟stdincs.h里的 enum DIR一样，下 左 右 上
+        //下面这行有问题，pre_screen_是Camera的protected成员，PersonSprite不是friend，不能访问，但父类Sprite可以
+        //sf_.sub_blit(x, y, (psize.width_/4), (psize.height_/4), camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
+        Sprite::sub_blit(x, y, (psize.width_/4), (psize.height_/4), phy, camera);
+    }
+    else
+    {
+        step_state = ++step_state == 4 ? 0 : step_state;
+        int16_t x = (psize.width_ / 4) * step_state;
+        int16_t y = (psize.height_ / 4) * dir_last;
+        Sprite::sub_blit(x, y, (psize.width_/4), (psize.height_/4), phy, camera);
     }
     
 }
