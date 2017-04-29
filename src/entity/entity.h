@@ -8,6 +8,7 @@
 #include "../graphics/camera.h"
 using std::shared_ptr;
 using std::unique_ptr;
+using std::string;
 
 const uint32_t UPDATE_GAP = 5;
 const uint32_t DRAW_GAP   = 10;
@@ -21,6 +22,9 @@ const uint32_t DRAW_GAP   = 10;
 class Input;
 class Graphics;
 
+//memetao:按照目前的情况，Entity都可以不用定义派生类了，
+//但是我还是觉得明确点好，索性为所有的"Entity"都显式声明
+//个Derived Class出来,虽然它可能和Base Class完全一样
 class Entity {
 public:
     Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
@@ -38,16 +42,21 @@ protected:
     //...
 };
 
+//Person  可以理解为每一个活的东西
 class Person : public Entity {
 public:
-    Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics,shared_ptr<Input>input)
-     :Entity(physics,graphics),input_(input) {}
-
+    Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics);
     void updatePhysics(shared_ptr<PhysicalSpace> space) override;
     void updateImage(shared_ptr<Camera> camera) override;
 
-private:
-    shared_ptr<Input> input_;
+};
+
+//Skill类
+class Skill: public Entity {
+public:
+    Skill(shared_ptr<Physics>physics,shared_ptr<Graphics> graphics);
+    void updatePhysics(shared_ptr<PhysicalSpace>space) override;
+    void updateImage(shared_ptr<Camera> camera) override;
 };
 
 #endif //ifndef ENTITY_H_

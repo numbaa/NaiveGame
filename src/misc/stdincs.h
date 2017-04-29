@@ -7,12 +7,14 @@
 
 #include <memory>
 #include <cstdint>
+#include "../config/config.h"
 
+
+//下 左  右  上
 enum DIR{
-    dir_standby = 0,
-    dir_up,
-    dir_down,
+    dir_down = 0,
     dir_left,
-    dir_right
+    dir_right,
+    dir_up
 };
 #endif //ifndef STDINCS_H_

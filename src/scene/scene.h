@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 using std::shared_ptr;
+using std::string;
 
 class Entity;
 class Background;
@@ -18,7 +19,7 @@ class Scene {
 public:
     //map file是一个图片文件，初始化Scene时载入图片，
     //并将载入数据交由bg_管理
-    Scene(std::string map_filename, shared_ptr<PhysicalSpace> space, std::string scene_name);
+    Scene(string name,shared_ptr<PhysicalSpace> space, std::string scene_name);
     void update(shared_ptr<Camera> camera);
     //每次addEntity，除了要在entities_中添加外，还要在space_中添加
     void addEntity(shared_ptr<Entity> entity);
@@ -29,7 +30,7 @@ public:
 protected:
     shared_ptr<Background>  bg_;
 private:
-    std::string             name_;
+    string                  name_;
     shared_ptr<PhysicalSpace> space_;
     EntityPool              entities_;
     shared_ptr<Entity>      player_;

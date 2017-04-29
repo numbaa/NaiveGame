@@ -3,11 +3,9 @@
 #include "../scene/physicalspace.h"
 #include "../graphics/graphics.h"
 
-//假的update()，没有分开控制physics和graphics的帧率
 void Entity::updatePhysics(shared_ptr<PhysicalSpace> space)
 {
-    //input_->update();
-    physics_->update(nullptr, space); //既然没有Input,physics就不会受外界影响，全靠它自己的属性进行更新
+    physics_->update(space);
 }
 void Entity::updateImage(shared_ptr<Camera> camera)
 {
@@ -20,13 +18,32 @@ Entity::Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics)
 }
 
 //Person 类
+Person::Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics)
+     :Entity(physics,graphics) 
+{
+}
+
 void Person ::updatePhysics(shared_ptr<PhysicalSpace> space)
 {
-    input_->update();   //因为有Input
-    physics_->update(input_,space);//所以需要update
+    physics_->update(space);
 }
 
 void Person::updateImage(shared_ptr<Camera> camera)
+{
+    graphics_->update(physics_,camera);
+}
+
+//skill 类
+Skill::Skill(shared_ptr<Physics>physics,shared_ptr<Graphics> graphics)
+    :Entity(physics,graphics)
+{
+}
+
+void Skill::updatePhysics(shared_ptr<PhysicalSpace> space)
+{
+    physics_->update(space);
+} 
+void Skill::updateImage(shared_ptr<Camera> camera)
 {
     graphics_->update(physics_,camera);
 }
