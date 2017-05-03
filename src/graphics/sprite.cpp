@@ -6,6 +6,7 @@
 Sprite::Sprite(std::string filename)
     : sf_(filename), picture_name_(filename)
 {
+    sf_.setColorKey(0xff, 0xff, 0xff);
 }
 
 void Sprite::blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera)
@@ -48,7 +49,11 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
     }
     else
     {
-        step_state = ++step_state == 4 ? 0 : step_state;
+        if (step_frames++ > FPStep)
+        {
+            step_state = ++step_state == 4 ? 0 : step_state;
+            step_frames = 0;
+        }
         int16_t x = (psize.width_ / 4) * step_state;
         int16_t y = (psize.height_ / 4) * dir_last;
         Sprite::sub_blit(x, y, (psize.width_/4), (psize.height_/4), phy, camera);

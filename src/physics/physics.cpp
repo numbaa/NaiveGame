@@ -1,7 +1,7 @@
 #include "physics.h"
 #include <cassert>
 
-#define STEP_DEFAULT    (10)
+#define STEP_DEFAULT    (2)
 #define posUpdate() \
 {\
     x_ += speed_x_;\

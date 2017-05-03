@@ -6,7 +6,7 @@
 using std::string;
 class Physics;
 
-const int32_t FPStep = 50;//多少帧一步
+const int32_t FPStep = 7;//多少帧一步
 
 //chentao:  Sprite持有的仍然是图片的名字，Surface持有最终的路径
 class Sprite {

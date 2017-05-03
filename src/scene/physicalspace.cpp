@@ -12,11 +12,13 @@ PhysicalSpace::PhysicalSpace(uint32_t width, uint32_t height)
     }
     for (uint32_t j=0; j<height_; j++)
     {
-        grid_[0][j].solid = true;
-        grid_[width_-1][j].solid = true;
+        grid_[j][0].solid = true;
+        grid_[j][width_-1].solid = true;
     }
 }
 
+//要实现addModel()就需要改动Entity，在里面建一个存储model数据的变量，
+//应该设计一个新的class作为这个变量的类型
 void PhysicalSpace::addModel(shared_ptr<Entity> entity)
 {
     return;

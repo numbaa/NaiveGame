@@ -22,7 +22,7 @@ shared_ptr<Entity> make_player()
 shared_ptr<Scene> make_first_scene()
 {
     string map_name = "chapter1";   
-    shared_ptr<PhysicalSpace> space(new PhysicalSpace(1000, 1000));
+    shared_ptr<PhysicalSpace> space(new PhysicalSpace(600, 480));
     shared_ptr<Scene> scene(new Scene(map_name, space, "first_scene")); //建议以地图名字命名场景
 
     return scene;
