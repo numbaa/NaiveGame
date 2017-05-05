@@ -18,13 +18,27 @@ shared_ptr<Entity> make_player()
     shared_ptr<Entity> player(new Person(phy, grph));
     return player;
 }
+//仅测试
+shared_ptr<Entity> make_skill()
+{
+    string skill_name = "fireball";
+    shared_ptr<Physics> phy(new SkillPhysics);
+    phy->setSpeed_x(0);phy->setPos_x(100);phy->setPos_y (100); 
 
+    shared_ptr<Sprite> sprite(new SkillSprite(skill_name));
+    shared_ptr<Graphics> grph(new SkillGraphics(skill_name,sprite));
+
+    shared_ptr<Entity> skill ( new Skill(phy,grph));
+    return skill;
+}
 shared_ptr<Scene> make_first_scene()
 {
     string map_name = "chapter1";   
     shared_ptr<PhysicalSpace> space(new PhysicalSpace(600, 480));
     shared_ptr<Scene> scene(new Scene(map_name, space, "first_scene")); //建议以地图名字命名场景
-
+    //主动产生技能,仅测试用
+    shared_ptr<Entity> skill = make_skill();
+    scene->addEntity(skill);
     return scene;
 }
 

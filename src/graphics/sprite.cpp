@@ -51,7 +51,7 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
     {
         if (step_frames++ > FPStep)
         {
-            step_state = ++step_state == 4 ? 0 : step_state;
+            step_state = (++step_state == 4 ? 0 : step_state); 
             step_frames = 0;
         }
         int16_t x = (psize.width_ / 4) * step_state;
@@ -59,4 +59,32 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
         Sprite::sub_blit(x, y, (psize.width_/4), (psize.height_/4), phy, camera);
     }
     
+}
+
+SkillSprite::SkillSprite(std::string name)
+    :Sprite(name),survival_times_(100)
+{
+    PictureSize psize = getPictureSizeByName(name);
+    image_row_ = psize.row_;
+    image_col_ = psize.col_;
+    width_ = psize.width_;
+    height_ = psize.height_;
+}
+void SkillSprite:: blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera) 
+{
+    static uint32_t last_frames = 0;
+    if(survival_times_ <= last_frames)
+    {
+        //destoryEntity(this);
+        return ;
+    }
+    uint32_t interval = survival_times_ / (image_row_ * image_col_);         //每张小图片占有的时间
+    uint16_t x = 0,y = 0;
+
+    x = (last_frames / interval) % image_row_ * (width_/image_row_);
+    y = (last_frames / interval) / image_row_ * (height_/image_col_);
+
+    Sprite::sub_blit(x ,y,width_/image_row_,height_/image_col_,phy,camera);
+
+    last_frames++;
 }

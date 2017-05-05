@@ -32,6 +32,7 @@ private:
 };
 
 class SkillGraphics : public Graphics {
+public:
     SkillGraphics(string name,shared_ptr<Sprite>sprite) 
         :Graphics(name,sprite) {} 
     void update(shared_ptr<Physics> physics,shared_ptr<Camera> camera);

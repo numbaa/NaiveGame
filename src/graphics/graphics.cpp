@@ -4,6 +4,7 @@
     :name_(name)
 {
 }*/
+//memetao: 这个函数的定位到底是什么，我一度想把sprite的update放到这里来 
 void Graphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> camera)
 {
     sprite_->blit(physics, camera);
@@ -17,9 +18,5 @@ void PlayerGraphics::update(shared_ptr<Physics> physics, shared_ptr<Camera> came
 
 void SkillGraphics::update(shared_ptr<Physics> physics,shared_ptr<Camera> camera)
 {
-    static uint32_t last_frames = 0; //持续时间
-    last_frames ++;
-    if(last_frames > alive_frames_)
-        return ;
-    //...
+    sprite_->blit(physics,camera);
 }

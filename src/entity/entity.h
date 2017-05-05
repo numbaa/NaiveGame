@@ -24,7 +24,7 @@ class Graphics;
 
 //memetao:按照目前的情况，Entity都可以不用定义派生类了，
 //但是我还是觉得明确点好，索性为所有的"Entity"都显式声明
-//个Derived Class出来,虽然它可能和Base Class完全一样
+//个Derived Class出来,即使它可能和Base Class完全一样
 class Entity {
 public:
     Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);

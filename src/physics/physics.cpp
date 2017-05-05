@@ -11,7 +11,7 @@
 
 
 
-//更新日志: Physics 不再是抽象基类
+//chentao: Physics 不再是抽象基类
 //space还是没能利用上
 
 Physics::Physics()

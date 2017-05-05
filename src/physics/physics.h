@@ -64,7 +64,6 @@ public:
     SkillPhysics();
     void update(shared_ptr<PhysicalSpace> space) override; 
 private:
-    //std::vector<Sign> friends_;  //怎么识别友军,是不是该给每个entity在PhysicalSpace中确定一个唯一的标识
     int32_t harms_;
 };
 //...
