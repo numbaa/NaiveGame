@@ -6,11 +6,17 @@
 Sprite::Sprite(std::string filename)
     : sf_(filename), picture_name_(filename)
 {
-    sf_.setColorKey(0xff, 0xff, 0xff);
+}
+
+void Sprite::setColorKey(uint8_t r, uint8_t g, uint8_t b)
+{
+    sf_.setColorKey(r, g, b);
 }
 
 void Sprite::blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera)
 {
+    //这里写简单了，phy->getPos_x()得到的x，应该为Sprite所属Entity的中心，
+    //如果直接使用这两个值blit到camera上，贴图会往右和往下偏半个身位
     sf_.blit(camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
 }
 

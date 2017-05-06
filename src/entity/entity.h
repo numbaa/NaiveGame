@@ -35,6 +35,9 @@ public:
     void setY(uint32_t y) { physics_ -> setPos_y(y); }
     uint32_t getX() const { return physics_ -> getPos_x(); }
     uint32_t getY() const { return physics_ -> getPos_y(); }
+    //下面这两个函数可能很快会被抛弃
+    uint32_t getWidth() const { return physics_->getWidth(); }
+    uint32_t getHeight() const { return physics_->getHeight(); }
     //...
 protected:
     shared_ptr<Physics>     physics_;

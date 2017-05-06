@@ -13,6 +13,7 @@ shared_ptr<Entity> make_player()
     shared_ptr<Physics> phy(new PlayerPhysics);
 
     shared_ptr<Sprite> sprite(new PersonSprite(player_name,0,0));
+    sprite->setColorKey(0xff, 0xff, 0xff);
     shared_ptr<Graphics> grph(new PlayerGraphics(player_name,sprite));   
 
     shared_ptr<Entity> player(new Person(phy, grph));
