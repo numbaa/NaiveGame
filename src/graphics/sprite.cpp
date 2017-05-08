@@ -62,7 +62,7 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
 }
 
 SkillSprite::SkillSprite(std::string name)
-    :Sprite(name),survival_times_(100)
+    :Sprite(name),survival_times_(60)
 {
     PictureSize psize = getPictureSizeByName(name);
     image_row_ = psize.row_;
@@ -75,16 +75,16 @@ void SkillSprite:: blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera)
     static uint32_t last_frames = 0;
     if(survival_times_ <= last_frames)
     {
-        //destoryEntity(this);
+        //destoryEntity(entity);   
         return ;
     }
     uint32_t interval = survival_times_ / (image_row_ * image_col_);         //每张小图片占有的时间
     uint16_t x = 0,y = 0;
 
-    x = (last_frames / interval) % image_row_ * (width_/image_row_);
-    y = (last_frames / interval) / image_row_ * (height_/image_col_);
+    x = (last_frames / interval) % image_col_ * (width_/image_col_);
+    y = (last_frames / interval) / image_col_ * (height_/image_row_);
 
-    Sprite::sub_blit(x ,y,width_/image_row_,height_/image_col_,phy,camera);
+    Sprite::sub_blit(x ,y,width_/image_col_,height_/image_row_,phy,camera);
 
     last_frames++;
 }

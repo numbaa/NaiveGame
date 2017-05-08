@@ -53,7 +53,7 @@ private:
     uint32_t move_step_x_;
     uint32_t move_step_y_;
     DIR dir_cur_;
-    uint32_t healthy_;
+    int32_t healthy_;
 };
 
 class NpcPhysics: public Physics{   //目前跟PlayerPhysics完全一样,先空着

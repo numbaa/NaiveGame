@@ -41,8 +41,8 @@ public:
 #define SKILL_1_TYPE                ("complete") //完整
 #define SKILL_1_WIDTH               (480)
 #define SKILL_1_HEIGHT              (80)        
-#define SKILL_1_IMAGE_ROW           (6)          //由6小块组成
-#define SKILL_1_IMAGE_COL           (1)
+#define SKILL_1_IMAGE_ROW           (1)          //由6小块组成
+#define SKILL_1_IMAGE_COL           (6)
 
 PictureSize getPictureSizeByName(string& name);
 string getPathByName(string& name);

@@ -23,7 +23,7 @@ shared_ptr<Entity> make_skill()
 {
     string skill_name = "fireball";
     shared_ptr<Physics> phy(new SkillPhysics);
-    phy->setSpeed_x(0);phy->setPos_x(100);phy->setPos_y (100); 
+    phy->setSpeed_x(3);phy->setPos_x(100);phy->setPos_y (100); 
 
     shared_ptr<Sprite> sprite(new SkillSprite(skill_name));
     shared_ptr<Graphics> grph(new SkillGraphics(skill_name,sprite));

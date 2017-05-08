@@ -37,7 +37,7 @@ public:
         :Graphics(name,sprite) {} 
     void update(shared_ptr<Physics> physics,shared_ptr<Camera> camera);
 private:
-    uint32_t alive_frames_; //生存时间
+    //uint32_t alive_frames_; //生存时间
 };
 
 #endif //ifndef GRAPHICS_H_
