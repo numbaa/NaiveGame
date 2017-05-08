@@ -9,6 +9,7 @@ VPATH=./src/game:./src/gameplay:./src/surface:./src/input:\
 
 objs= config.o entity.o game.o camera.o graphics.o sprite.o command.o input.o\
 		physics.o scene.o background.o physicalspace.o surface.o gameplay.o \
+		model.o
 
 
 all: $(objs) main.o
