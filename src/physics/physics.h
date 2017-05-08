@@ -4,6 +4,7 @@
 #include "../input/input.h"
 //#include "../entity/entity.h"
 #include "../scene/physicalspace.h"
+#include "model.h"
 using std::shared_ptr;
 using std::string;
 /* 一个Physics对象是Entity的一个Component，Entity本身只记录一个简单座标(x, y)，
@@ -27,11 +28,18 @@ public:
     uint32_t getPos_y(void) const { return y_;}
     void setPos_x(uint32_t x) { x_ = x; }
     void setPos_y(uint32_t y) { y_ = y; }
+    //Model不应该只是矩形，也就是不应该只有长和宽
+    //所以未来下面这几个函数很可能要抛弃
+    uint32_t getWidth() const { return model_.getWidth(); }
+    uint32_t getHeight() const { return model_.getHeight(); }
+    void setWidth(uint32_t width) { model_.setWidth(width); }
+    void setHeight(uint32_t height) { model_.setHeight(height); }
 protected:
     uint32_t x_;
     uint32_t y_;
     uint32_t speed_x_;  
     uint32_t speed_y_;  
+    Model    model_;
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
 class PlayerPhysics : public Physics {
