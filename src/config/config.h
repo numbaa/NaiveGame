@@ -46,5 +46,5 @@ public:
 
 PictureSize getPictureSizeByName(string& name);
 string getPathByName(string& name);
-
+//试一下公司的网络能不能上传
 #endif  //_CONFIG_H_
