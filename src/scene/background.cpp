@@ -20,3 +20,8 @@ uint16_t Background::getHeight() const
 {
     return surface_.getHeight();
 }
+
+const SDL_PixelFormat* Background::getPixelFormat() const
+{
+    return surface_.getPixelFormat();
+}

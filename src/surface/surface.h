@@ -35,6 +35,7 @@ public:
     uint16_t getHeight() const;
     uint16_t getWidth() const;
     void setColorKey(uint8_t r, uint8_t g, uint8_t b);
+    const SDL_PixelFormat* getPixelFormat() const;
 protected:
     shared_ptr<SDL_Surface>     surface_;
 };

@@ -26,8 +26,9 @@ void Camera::changeBackground(shared_ptr<Background> bg)
 //计算sub_blit()前两个参数的值
 void Camera::refresh(int16_t x, int16_t y)
 {
-    bg_->blit(0, 0, width_, height_, screen_);
-    pre_screen_.sub_blit(0, 0, width_, height_, screen_, 0, 0);
+    screen_.clear();
+    bg_->blit(x-width_/2, y-height_/2, width_, height_, screen_);
+    pre_screen_.sub_blit(x-width_/2, y-height_/2, width_, height_, screen_, 0, 0);
     SDL_Flip(screen_.surface_.get());
     pre_screen_.clear();
 }
