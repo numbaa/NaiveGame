@@ -36,3 +36,10 @@ void Model::setHeight(uint32_t height)
 {
     height_ = height;
 }
+
+bool operator<(const std::shared_ptr<Model>& left, const std::shared_ptr<Model>& right)
+{
+    return (left->width_ * left->width_ + left->height_ * left->height_)
+            -
+           (right->width_ * right->width_ + right->height_ * right->height_);
+}

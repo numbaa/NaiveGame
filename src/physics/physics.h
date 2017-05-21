@@ -30,16 +30,18 @@ public:
     void setPos_y(uint32_t y) { y_ = y; }
     //Model不应该只是矩形，也就是不应该只有长和宽
     //所以未来下面这几个函数很可能要抛弃
-    uint32_t getWidth() const { return model_.getWidth(); }
-    uint32_t getHeight() const { return model_.getHeight(); }
-    void setWidth(uint32_t width) { model_.setWidth(width); }
-    void setHeight(uint32_t height) { model_.setHeight(height); }
+    uint32_t getWidth() const { return model_->getWidth(); }
+    uint32_t getHeight() const { return model_->getHeight(); }
+    void setWidth(uint32_t width) { model_->setWidth(width); }
+    void setHeight(uint32_t height) { model_->setHeight(height); }
+    //ugly
+    shared_ptr<Model> getModel() { return model_; }
 protected:
     uint32_t x_;
     uint32_t y_;
     uint32_t speed_x_;  
     uint32_t speed_y_;  
-    Model    model_;
+    shared_ptr<Model>    model_;
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
 class PlayerPhysics : public Physics {

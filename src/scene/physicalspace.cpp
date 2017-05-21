@@ -17,11 +17,9 @@ PhysicalSpace::PhysicalSpace(uint32_t width, uint32_t height)
     }
 }
 
-//要实现addModel()就需要改动Entity，在里面建一个存储model数据的变量，
-//应该设计一个新的class作为这个变量的类型
 void PhysicalSpace::addModel(shared_ptr<Entity> entity)
 {
-    return;
+    mp_[ entity->getModel() ] = entity;
 }
 
 void PhysicalSpace::delModel(shared_ptr<Entity> entity)
