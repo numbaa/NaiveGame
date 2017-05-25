@@ -15,7 +15,7 @@ using std::string;
  */
 class Physics {
 public:
-    Physics();
+    Physics(uint32_t x, uint32_t y, shared_ptr<Model> model);
     virtual void update(shared_ptr<PhysicalSpace> space);
     virtual ~Physics() = default;
 
@@ -42,11 +42,12 @@ protected:
     uint32_t speed_x_;  
     uint32_t speed_y_;  
     shared_ptr<Model>    model_;
+    void posUpdate(shared_ptr<PhysicalSpace> space);
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
 class PlayerPhysics : public Physics {
 public:
-    PlayerPhysics();
+    PlayerPhysics(uint32_t x, uint32_t y, shared_ptr<Model> model);
     void update(shared_ptr<PhysicalSpace> space) override;
     void setMoveStep_x(uint32_t step) { move_step_x_ = step;}
     void setMoveStep_y(uint32_t step) { move_step_y_ = step;}
@@ -71,7 +72,7 @@ class NpcPhysics: public Physics{   //目前跟PlayerPhysics完全一样,先空�
 
 class SkillPhysics:public Physics {
 public:
-    SkillPhysics();
+    SkillPhysics(uint32_t x, uint32_t y);
     void update(shared_ptr<PhysicalSpace> space) override; 
 private:
     int32_t harms_;

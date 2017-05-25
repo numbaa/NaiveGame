@@ -15,12 +15,15 @@ using std::shared_ptr;
 class Entity;   //头文件里没有用到Entity的函数和属性，只需要一个声明
 class Model;
 
-const uint32_t BLOCK_SIZE = 12;     //每个Block大小为12*12，12这个数是暂时乱写上去的
+const uint32_t BLOCK_SIZE = 6;     //每个Block大小为6*6，6这个数是暂时乱写上去的
 
 class PhysicalSpace {
 
     struct Block {
         Block() : solid(false), harm(0), owner(nullptr) {}
+        Block(const Block& block);
+        ~Block();
+        Block& operator=(const Block& block);
         bool                solid;
         uint32_t            harm;
         shared_ptr<Entity>  owner;
@@ -45,6 +48,7 @@ public:
     PhysicalSpace(uint32_t width, uint32_t height);
     void addModel(shared_ptr<Entity> entity);
     void delModel(shared_ptr<Entity> entity);
+    bool collision(shared_ptr<Model> model, int32_t x, int32_t y);
 private:
     uint32_t width_;
     uint32_t height_;

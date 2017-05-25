@@ -17,12 +17,12 @@ void Sprite::blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera)
 {
     //这里写简单了，phy->getPos_x()得到的x，应该为Sprite所属Entity的中心，
     //如果直接使用这两个值blit到camera上，贴图会往右和往下偏半个身位
-    sf_.blit(camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
+    sf_.blit(camera->pre_screen_, phy->getPos_x()-sf_.getWidth()/2, phy->getPos_y()-sf_.getHeight()/2);
 }
 
 void Sprite::sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<Physics> phy, shared_ptr<Camera> camera)
 {
-    sf_.sub_blit(x, y, w, h, camera->pre_screen_, phy->getPos_x(), phy->getPos_y());
+    sf_.sub_blit(x, y, w, h, camera->pre_screen_, phy->getPos_x()-w/2, phy->getPos_y()-h/2);
 }
 
 void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)

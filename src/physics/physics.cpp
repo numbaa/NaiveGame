@@ -2,29 +2,39 @@
 #include <cassert>
 
 #define STEP_DEFAULT    (2)
+/*
+ * 要变成一个函数
 #define posUpdate() \
 {\
     x_ += speed_x_;\
     y_ += speed_y_;\
 }   
+*/
 //limit(x_,y_);需要知道屏幕尺寸
 
 
+void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
+{
+    int32_t x = x_ + speed_x_;
+    int32_t y = y_ + speed_y_;
+    if (space->collision(this->getModel(), x, y) == false)
+    {
+        x_ = x;
+        y_ = y;
+    }
+}
 
-//chentao: Physics 不再是抽象基类
-//space还是没能利用上
-
-Physics::Physics()
-    : x_(0),y_(0),speed_x_(0),speed_y_(0)
+Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model)
+    : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model)
 {}
 void Physics::update(shared_ptr<PhysicalSpace> space)
 {
-    posUpdate();
+    posUpdate(space);
     //...
 }
 //PlayerInput的构造函数暂时没用参数
-PlayerPhysics::PlayerPhysics()
-    : Physics(),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_up),healthy_(0)
+PlayerPhysics::PlayerPhysics(uint32_t x, uint32_t y, shared_ptr<Model> model)
+    : Physics(x, y, model),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_up),healthy_(0)
 {
 }
 void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
@@ -90,17 +100,17 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
             break;
         }
     }
-    posUpdate();   //更新坐标,暂时只能写到这里
+    posUpdate(space);   //更新坐标,暂时只能写到这里
     //...//
 }
 
-SkillPhysics::SkillPhysics()
-    :harms_(0)
+SkillPhysics::SkillPhysics(uint32_t x, uint32_t y)
+    : Physics(x, y, nullptr), harms_(0)
 {
     ;
 }
 void SkillPhysics::update(shared_ptr<PhysicalSpace>space)
 {
-    posUpdate();
+    posUpdate(space);
     //harms_属性等待PhysicalSpace
 }
