@@ -38,6 +38,8 @@ public:
     //下面这两个函数可能很快会被抛弃
     uint32_t getWidth() const { return physics_->getWidth(); }
     uint32_t getHeight() const { return physics_->getHeight(); }
+    //ugly
+    shared_ptr<Model> getModel() { return physics_->getModel(); }
     //...
 protected:
     shared_ptr<Physics>     physics_;

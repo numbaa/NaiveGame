@@ -1,13 +1,18 @@
 #include "model.h"
 #include <iostream>
 
-Model::Model()
-    : width_(0), height_(0)
-{}
-
 Model::Model(uint32_t width, uint32_t height)
     : width_(width), height_(height)
-{}
+{
+    pos.reserve(width * height);
+    int32_t half_x = width_ / 2;
+    int32_t half_y = height_ / 2;
+    for (int i=-half_x; i<half_x; i++)
+        for (int j=-half_y; j<half_y; j++)
+        {
+            pos.push_back(Pos(i, j));
+        }
+}
 
 uint32_t Model::getWidth() const
 {
@@ -35,4 +40,11 @@ void Model::setWidth(uint32_t width)
 void Model::setHeight(uint32_t height)
 {
     height_ = height;
+}
+
+bool operator<(const std::shared_ptr<Model>& left, const std::shared_ptr<Model>& right)
+{
+    return (left->width_ * left->width_ + left->height_ * left->height_)
+            -
+           (right->width_ * right->width_ + right->height_ * right->height_);
 }

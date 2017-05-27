@@ -15,7 +15,7 @@ using std::string;
  */
 class Physics {
 public:
-    Physics();
+    Physics(uint32_t x, uint32_t y, shared_ptr<Model> model);
     virtual void update(shared_ptr<PhysicalSpace> space);
     virtual ~Physics() = default;
 
@@ -30,21 +30,24 @@ public:
     void setPos_y(uint32_t y) { y_ = y; }
     //Model不应该只是矩形，也就是不应该只有长和宽
     //所以未来下面这几个函数很可能要抛弃
-    uint32_t getWidth() const { return model_.getWidth(); }
-    uint32_t getHeight() const { return model_.getHeight(); }
-    void setWidth(uint32_t width) { model_.setWidth(width); }
-    void setHeight(uint32_t height) { model_.setHeight(height); }
+    uint32_t getWidth() const { return model_->getWidth(); }
+    uint32_t getHeight() const { return model_->getHeight(); }
+    void setWidth(uint32_t width) { model_->setWidth(width); }
+    void setHeight(uint32_t height) { model_->setHeight(height); }
+    //ugly
+    shared_ptr<Model> getModel() { return model_; }
 protected:
     uint32_t x_;
     uint32_t y_;
     uint32_t speed_x_;  
     uint32_t speed_y_;  
-    Model    model_;
+    shared_ptr<Model>    model_;
+    void posUpdate(shared_ptr<PhysicalSpace> space);
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
 class PlayerPhysics : public Physics {
 public:
-    PlayerPhysics();
+    PlayerPhysics(uint32_t x, uint32_t y, shared_ptr<Model> model);
     void update(shared_ptr<PhysicalSpace> space) override;
     void setMoveStep_x(uint32_t step) { move_step_x_ = step;}
     void setMoveStep_y(uint32_t step) { move_step_y_ = step;}
@@ -69,7 +72,7 @@ class NpcPhysics: public Physics{   //目前跟PlayerPhysics完全一样,先空�
 
 class SkillPhysics:public Physics {
 public:
-    SkillPhysics();
+    SkillPhysics(uint32_t x, uint32_t y);
     void update(shared_ptr<PhysicalSpace> space) override; 
 private:
     int32_t harms_;

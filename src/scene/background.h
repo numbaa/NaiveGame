@@ -12,6 +12,7 @@ public:
     void blit(int16_t x, int16_t y, uint16_t width, uint16_t height, Surface& screen);
     uint16_t getHeight() const;
     uint16_t getWidth() const;
+    const SDL_PixelFormat* getPixelFormat() const;
 private:
     string name_;       //存的是地图的别名
     Surface surface_;
