@@ -30,6 +30,11 @@ public:
 
 
 //图片尺寸信息配置
+#define MAP_CHAPTER_1_WIDTH         (1940)
+#define MAP_CHAPTER_1_HEIGHT        (1440)
+#define MAP_CHAPTER_1_IMAGE_ROW     (1)
+#define MAP_CHAPTER_1_IMAGE_COL     (1)
+
 #define PLAYER_NUM_1_WIDTH          (256)
 #define PLAYER_NUM_1_HEIGHT         (512)
 #define PLAYER_NUM_1_IMAGE_ROW      (4)

@@ -15,10 +15,12 @@ const map<string,string> SkillPathList = {
 };
 
 const map<string,PictureSize> PictureSizeList = {
-    //person
-    {PLAYER_NUM_1_NAME,PictureSize(PLAYER_NUM_1_WIDTH,PLAYER_NUM_1_HEIGHT,PLAYER_NUM_1_IMAGE_ROW,PLAYER_NUM_1_IMAGE_COL)},
+    //PLAYER_NUM_1_NAME
+    { PLAYER_NUM_1_NAME    ,   PictureSize(PLAYER_NUM_1_WIDTH,PLAYER_NUM_1_HEIGHT,PLAYER_NUM_1_IMAGE_ROW,PLAYER_NUM_1_IMAGE_COL)},
     //Skill
-    {SKILL_1_NAME,PictureSize(SKILL_1_WIDTH,SKILL_1_HEIGHT,SKILL_1_IMAGE_ROW,SKILL_1_IMAGE_COL)}
+    { SKILL_1_NAME         ,   PictureSize(SKILL_1_WIDTH,SKILL_1_HEIGHT,SKILL_1_IMAGE_ROW,SKILL_1_IMAGE_COL)},
+    //map
+    { MAP_CHAPTER_1_NAME   ,   PictureSize(MAP_CHAPTER_1_WIDTH,MAP_CHAPTER_1_HEIGHT,MAP_CHAPTER_1_IMAGE_ROW,MAP_CHAPTER_1_IMAGE_COL)}
 };
 PictureSize getPictureSizeByName(string& name)
 {

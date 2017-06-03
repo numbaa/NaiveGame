@@ -73,13 +73,13 @@ void initKeyBoardMap(void)
     KeyBoardMap_Up  [SDLK_RIGHT] = Elem;
     Elem.reset(new Command);
     
-    /*std::cout<<"KeyBoardMap init down"<<std::endl;
-    std::cout<<"test:"<<std::endl;
-    auto it = KeyBoardMap_Down[SDLK_UP];
-    std::cout<<"Command type :"<<it->getType()<<std::endl;
-    std::cout<<"COmmand value:"<<it->getValue()<<std::endl;
-    it = KeyBoardMap_Up[SDLK_UP];
-    std::cout<<"Command type :"<<it->getType()<<std::endl;
-    std::cout<<"COmmand value:"<<it->getValue()<<std::endl;*/
+    //技能1挂在Q上,请参考LOL
+    Elem->setCommand(SKILL_ON,SKILL1);
+    KeyBoardMap_Down[SDLK_q] = Elem;
+    Elem.reset(new Command);
+
+    Elem->setCommand(SKILL_OFF,SKILL1);
+    KeyBoardMap_Up[SDLK_q] = Elem;
+    Elem.reset(new Command);
 }
 

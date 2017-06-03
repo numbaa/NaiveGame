@@ -1,10 +1,8 @@
 #include "gameplay.h"
 #include <SDL/SDL.h>
+#include "../config/config.h"
 
-
-
-//用的时候一定要参考下config.h中的路径，在项目路径下建立对应文件夹
-//可能还存在错误
+//我日后在config中配置一下这些魔幻数字
 
 shared_ptr<Entity> make_player()
 {
@@ -23,7 +21,8 @@ shared_ptr<Entity> make_player()
 shared_ptr<Entity> make_skill()
 {
     string skill_name = "fireball";
-    shared_ptr<Physics> phy(new SkillPhysics(100, 100));
+    shared_ptr<Model> model(new Model(8,8));
+    shared_ptr<Physics> phy(new SkillPhysics(100, 100,model));
     phy->setSpeed_x(0);
 
     shared_ptr<Sprite> sprite(new SkillSprite(skill_name));
@@ -35,11 +34,12 @@ shared_ptr<Entity> make_skill()
 shared_ptr<Scene> make_first_scene()
 {
     string map_name = "chapter1";   
-    shared_ptr<PhysicalSpace> space(new PhysicalSpace(600, 480));//不能用(600, 480)，要根据场景来设定
+    PictureSize mapinfo = getPictureSizeByName(map_name);
+    shared_ptr<PhysicalSpace> space(new PhysicalSpace(mapinfo.width_,mapinfo.height_));
     shared_ptr<Scene> scene(new Scene(map_name, space, "first_scene")); //建议以地图名字命名场景
     //主动产生技能,仅测试用
-    //shared_ptr<Entity> skill = make_skill();
-    //scene->addEntity(skill);
+    shared_ptr<Entity> skill = make_skill(); 
+    scene->addEntity(skill);
     return scene;
 }
 

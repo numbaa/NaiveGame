@@ -58,7 +58,7 @@ public:
 private:
     void infoUpdate_MOVE_ON(keyvalue_t);
     void infoUpdate_MOVE_OFF(keyvalue_t);
-    //void infoUpdate_SKILL_ON(PlayerPhysics&,keyvalue_t);
+    void infoUpdate_SKILL_ON(keyvalue_t);
     //void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
     PlayerInput input_;
     uint32_t move_step_x_;
@@ -72,7 +72,7 @@ class NpcPhysics: public Physics{   //目前跟PlayerPhysics完全一样,先空�
 
 class SkillPhysics:public Physics {
 public:
-    SkillPhysics(uint32_t x, uint32_t y);
+    SkillPhysics(uint32_t x, uint32_t y,shared_ptr<Model> model);
     void update(shared_ptr<PhysicalSpace> space) override; 
 private:
     int32_t harms_;

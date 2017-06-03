@@ -75,7 +75,17 @@ void PlayerPhysics::infoUpdate_MOVE_OFF(keyvalue_t value)
     default:break;
     } 
 } 
-
+void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
+{
+    switch (keyvalue)
+    {
+    case SKILL1:
+        break;
+    default:
+        //error();
+        break;
+    }
+}
 void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
 {
     shared_ptr <Command> cmd (new Command);
@@ -93,6 +103,7 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
             infoUpdate_MOVE_OFF(value);
             break;
         case SKILL_ON:
+            infoUpdate_SKILL_ON(value);
             break;
         case SKILL_OFF:
             break;
@@ -104,8 +115,8 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
     //...//
 }
 
-SkillPhysics::SkillPhysics(uint32_t x, uint32_t y)
-    : Physics(x, y, nullptr), harms_(0)
+SkillPhysics::SkillPhysics(uint32_t x, uint32_t y,shared_ptr<Model> model)
+    : Physics(x, y, model), harms_(0)
 {
     ;
 }
