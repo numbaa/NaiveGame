@@ -2,10 +2,8 @@
 #include "../entity/entity.h"
 #include <cassert>
 #include <iostream>
-uint32_t promote(uint32_t val,uint32_t size)
-{
-    return (val%size ==0) ? (val/size) : (val/size + 1);
-}
+
+
 PhysicalSpace::PhysicalSpace(uint32_t width, uint32_t height)
     : width_(promote(width,BLOCK_SIZE)), height_(promote(height,BLOCK_SIZE)), grid_(height_,std::vector<Block>(width_, Block()))
 {

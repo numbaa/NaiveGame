@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iostream>
 
-Scene::Scene(string name,shared_ptr<PhysicalSpace> space, std::string scene_name)
+/*Scene::Scene(string name,shared_ptr<PhysicalSpace> space, std::string scene_name)
      :  bg_(std::make_shared<Background>(Background(name))),
         name_(scene_name),
         space_(space),
@@ -12,10 +12,30 @@ Scene::Scene(string name,shared_ptr<PhysicalSpace> space, std::string scene_name
         last_update_(SDL_GetTicks()),
         last_draw_(SDL_GetTicks())
 {
+}*/
+shared_ptr<Scene> Scene::instance_ = nullptr;
+Scene::Scene()
+    :bg_( nullptr ),
+    space_(nullptr),
+    player_(nullptr),
+    last_update_(SDL_GetTicks()),
+    last_draw_(SDL_GetTicks())
+{
 }
-
+void Scene::init(string name,shared_ptr<PhysicalSpace>& space)
+{
+    bg_ = make_shared<Background> (Background(name));
+    space_ = space;
+    name_ = name;
+}
 void Scene::addEntity(shared_ptr<Entity> entity)
 {
+    auto it = std::find(entities_.begin(),entities_.end(),entity);
+    //already exists
+    if(it != entities_.end())
+    {
+        return;
+    }
     entities_.push_back(entity);
     space_->addModel(entity);
 }

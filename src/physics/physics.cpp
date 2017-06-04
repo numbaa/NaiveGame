@@ -1,7 +1,12 @@
 #include "physics.h"
 #include <cassert>
+#include "../scene/scene.h"
+#include <iostream>
 
 #define STEP_DEFAULT    (2)
+
+class Entity;
+shared_ptr<Entity> createSkill(string,uint32_t,uint32_t,int32_t,int32_t);
 /*
  * 要变成一个函数
 #define posUpdate() \
@@ -22,6 +27,7 @@ void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
         x_ = x;
         y_ = y;
     }
+    //updateModel
 }
 
 Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model)
@@ -37,6 +43,7 @@ PlayerPhysics::PlayerPhysics(uint32_t x, uint32_t y, shared_ptr<Model> model)
     : Physics(x, y, model),move_step_x_(STEP_DEFAULT),move_step_y_(STEP_DEFAULT),dir_cur_(dir_up),healthy_(0)
 {
 }
+
 void PlayerPhysics::infoUpdate_MOVE_ON(keyvalue_t value)
 {
     switch (value)
@@ -80,6 +87,9 @@ void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
     switch (keyvalue)
     {
     case SKILL1:
+        std::cout<<"skil 1 on"<<std::endl;
+        //这里是暂时的，因该还要考虑当前人物的方向
+        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME,x_+20,y_,1,0));
         break;
     default:
         //error();
@@ -118,7 +128,6 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
 SkillPhysics::SkillPhysics(uint32_t x, uint32_t y,shared_ptr<Model> model)
     : Physics(x, y, model), harms_(0)
 {
-    ;
 }
 void SkillPhysics::update(shared_ptr<PhysicalSpace>space)
 {

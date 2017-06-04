@@ -3,7 +3,7 @@
 #include "../misc/stdincs.h"
 #include <vector>
 #include <iostream>
-//#include "../entity/entity.h" //解决循环include问题
+#include <map>
 using std::shared_ptr;
 
 /*
@@ -15,7 +15,7 @@ using std::shared_ptr;
 class Entity;   //头文件里没有用到Entity的函数和属性，只需要一个声明
 class Model;
 
-const uint32_t BLOCK_SIZE = 6;     //每个Block大小为6*6，6这个数是暂时乱写上去的
+//const uint32_t BLOCK_SIZE = 6;     //每个Block大小为6*6，6这个数是暂时乱写上去的
 
 class PhysicalSpace {
 
