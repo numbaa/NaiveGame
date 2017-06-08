@@ -41,7 +41,8 @@ private: //我将这些图片信息放到了构造函数中初始化，以避免
     uint32_t image_col_;
     uint32_t width_;
     uint32_t height_;
-    uint32_t survival_times_;  //技能持续时间
+    uint32_t survival_times_;  //技能生存时间
+    uint32_t last_frames_;     //已经持续时间
 };
 
 #endif //ifndef SPRITE_H_

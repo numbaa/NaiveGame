@@ -1,5 +1,5 @@
 #include "graphics.h"
-
+#include <iostream>
 /*Graphics::Graphics(string name) 
     :name_(name)
 {

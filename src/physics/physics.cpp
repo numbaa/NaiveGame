@@ -87,9 +87,7 @@ void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
     switch (keyvalue)
     {
     case SKILL1:
-        std::cout<<"skil 1 on"<<std::endl;
-        //这里是暂时的，因该还要考虑当前人物的方向
-        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME,x_+20,y_,1,0));
+        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME,x_+20,y_,3,0));
         break;
     default:
         //error();

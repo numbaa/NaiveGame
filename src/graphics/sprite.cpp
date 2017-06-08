@@ -68,7 +68,7 @@ void PersonSprite::blit(shared_ptr<Physics> phy,shared_ptr<Camera>  camera)
 }
 
 SkillSprite::SkillSprite(std::string name)
-    :Sprite(name),survival_times_(60)
+    :Sprite(name),survival_times_(60),last_frames_(0)
 {
     PictureSize psize = getPictureSizeByName(name);
     image_row_ = psize.row_;
@@ -78,8 +78,8 @@ SkillSprite::SkillSprite(std::string name)
 }
 void SkillSprite:: blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera) 
 {
-    static uint32_t last_frames = 0;
-    if(survival_times_ <= last_frames)
+    //static uint32_t last_frames = 0;   //这个static变量导致技能只能释放一次
+    if(survival_times_ <= last_frames_)
     {
         //destoryEntity(entity);   
         return ;
@@ -87,10 +87,10 @@ void SkillSprite:: blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera)
     uint32_t interval = survival_times_ / (image_row_ * image_col_);         //每张小图片占有的时间
     uint16_t x = 0,y = 0;
 
-    x = (last_frames / interval) % image_col_ * (width_/image_col_);
-    y = (last_frames / interval) / image_col_ * (height_/image_row_);
+    x = (last_frames_ / interval) % image_col_ * (width_/image_col_);
+    y = (last_frames_ / interval) / image_col_ * (height_/image_row_);
 
     Sprite::sub_blit(x ,y,width_/image_col_,height_/image_row_,phy,camera);
 
-    last_frames++;
+    last_frames_++;
 }
