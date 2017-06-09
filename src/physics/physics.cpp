@@ -20,14 +20,30 @@ shared_ptr<Entity> createSkill(string,uint32_t,uint32_t,int32_t,int32_t);
 
 void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
 {
+    int32_t x_old = x_;
+    int32_t y_old = y_;
     int32_t x = x_ + speed_x_;
     int32_t y = y_ + speed_y_;
+
     if (space->collision(this->getModel(), x, y) == false)
     {
         x_ = x;
         y_ = y;
     }
-    //updateModel
+    if( x == x_old && y == y_old )   //下面的步骤干的事情有点多，直接跳过
+        return ;
+    //updateModel  ,这里我假设获取的到的确是原始的entity
+    uint32_t row_old = y_old / BLOCK_SIZE;
+    uint32_t col_old = x_old / BLOCK_SIZE;
+    shared_ptr<Entity> owner = space->getOwner(row_old,col_old); 
+    //MemeTao:
+    //Player 是独立于EntityPool之外的，取不到enetity,但是这个函数是会被它调用到的
+    //所以要加下面的判断
+    //还要注意的是：Player的特殊性，导致只能它去碰撞别人，而别人缺碰不到它
+    //这应该是个BUG吧
+    if(owner == nullptr)     
+        return ;
+    space->moveGrid(x_old,y_old,owner);
 }
 
 Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model)
@@ -100,7 +116,6 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
     input_.update();  //先更新input
     while(( cmd = input_.getCommand()) != nullptr)  //取命令
     {
-        //cmd = input->getCommand();
         keyvalue_t value = cmd->getValue();
         switch(cmd->getType())
         {
@@ -119,7 +134,8 @@ void PlayerPhysics::update(shared_ptr<PhysicalSpace> space)
             break;
         }
     }
-    posUpdate(space);   //更新坐标,暂时只能写到这里
+    //更新坐标
+    posUpdate(space);   
     //...//
 }
 

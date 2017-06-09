@@ -46,9 +46,14 @@ class PhysicalSpace {
     using ModelPool = std::map<shared_ptr<Model>, shared_ptr<Entity>>;
 public:
     PhysicalSpace(uint32_t width, uint32_t height);
+    void addGrid(shared_ptr<Entity>&);
+    void clearGrid(shared_ptr<Entity>&);
     void addModel(shared_ptr<Entity> entity);
     void delModel(shared_ptr<Entity> entity);
+    void moveGrid(int32_t x,int32_t y,shared_ptr<Entity>& owner);
     bool collision(shared_ptr<Model> model, int32_t x, int32_t y);
+    //暂时这么干吧
+    const shared_ptr<Entity> getOwner(uint32_t row , uint32_t col) { return grid_[row][col].owner;}
 private:
     uint32_t width_;
     uint32_t height_;

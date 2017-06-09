@@ -18,24 +18,11 @@ PhysicalSpace::PhysicalSpace(uint32_t width, uint32_t height)
         grid_[j][0].solid = true;
         grid_[j][width_-1].solid = true;
     }
-    //std::cout<<"row:"<<height_<<" col:"<<width_<<std::endl;
 }
-
-void PhysicalSpace::addModel(shared_ptr<Entity> entity)
+//在grid中填充一块区域
+//至于会不会覆盖别人的区域,由调用者负责!
+void PhysicalSpace::addGrid(shared_ptr<Entity>& entity)
 {
-    assert( mp_.find(entity->getModel()) == mp_.end());
-
-    mp_[ entity->getModel() ] = entity;
-    /*int32_t x = entity->getX() / BLOCK_SIZE;
-    int32_t y = entity->getY() / BLOCK_SIZE;
-    for (auto& p : entity->getModel()->pos)
-    {
-        //这里导致添加entity失败，段溢出
-        //计算方式不对,model内部的Pos记录的是实际的坐标
-        grid_[y+p.y][x+p.x] = Block();
-        grid_[y+p.y][x+p.x].solid = true;
-        grid_[y+p.y][x+p.x].owner = entity;
-    }*/
     int32_t x = static_cast<int32_t>(entity->getX());
     int32_t y = static_cast<int32_t>(entity->getY());
     for( auto& p : entity->getModel()->pos)
@@ -45,45 +32,54 @@ void PhysicalSpace::addModel(shared_ptr<Entity> entity)
         grid_[row][col] = Block();
         grid_[row][col].solid = true;
         grid_[row][col].owner = entity;
-        
     }
 }
 
-void PhysicalSpace::delModel(shared_ptr<Entity> entity)
+void PhysicalSpace::addModel(shared_ptr<Entity> entity)
 {
-    int32_t x = entity->getX() / BLOCK_SIZE;
-    int32_t y = entity->getY() / BLOCK_SIZE;
+    assert( mp_.find(entity->getModel()) == mp_.end());
+    addGrid(entity);
+    mp_[ entity->getModel() ] = entity; 
+}
+//清除grid中的一块区域
+void PhysicalSpace::clearGrid(shared_ptr<Entity>& entity)
+{
+    int32_t x = static_cast<int32_t>(entity->getX());
+    int32_t y = static_cast<int32_t>(entity->getY());
     for (auto& p : entity->getModel()->pos)
     {
-        grid_[y+p.y][x+p.x].owner.reset();
-        grid_[y+p.y][x+p.x] = Block();
+        uint32_t row = (y + p.y) /BLOCK_SIZE;
+        uint32_t col = (x + p.x) /BLOCK_SIZE;
+        grid_[row][col].owner.reset();
+        grid_[row][col] = Block();
     }
-    ModelPool::iterator it = mp_.find( entity->getModel() );
+}
+void PhysicalSpace::delModel(shared_ptr<Entity> entity)
+{
+    assert( mp_.find(entity->getModel()) != mp_.end());
+    clearGrid(entity);
+    ModelPool::iterator it = mp_.find(entity->getModel());
     mp_.erase(it);
 }
+//移动grid中的一块区域
+//在未弄清楚移动细节前,别轻易改动这个函数
+void PhysicalSpace::moveGrid(int32_t x_old,int32_t y_old,shared_ptr<Entity>& owner)
+{
+    const uint32_t x = owner->getX();
+    const uint32_t y = owner->getY();
+    owner->setX(x_old);
+    owner->setY(y_old);
+    clearGrid(owner); //清除原有位置的model
+    owner->setX(x);   //必须要恢复
+    owner->setY(y); 
 
+    addGrid(owner);
+}
 //collision()检测：当该Model位移(movement_x, movement_y)时，是否与场景内其它物体碰撞
 //是返回true，否返回false
 //该函数修修补补改了好几遍，逻辑写得有些混乱，日后需要重写
 bool PhysicalSpace::collision(shared_ptr<Model> model, int32_t movement_x, int32_t movement_y)
 {
-    //这里同样有上面的那个小毛病
-    /*int32_t mx = movement_x / BLOCK_SIZE;
-    int32_t my = movement_y / BLOCK_SIZE;
-    for (auto& p : model->pos)
-    {
-        //如果没有下面这个if语句，小人走到上边界和下边界程序会崩溃，
-        //原因是下面的 Block& bk = grid_[my+p.y][mx+p.x] 越界了
-        if (my+p.y >= height_|| mx+p.x >= width_)
-        {
-            return true;
-        }
-        Block& bk = grid_[my+p.y][mx+p.x];
-        if (bk.owner != mp_[model] && bk.solid == true)
-        {
-            return true;
-        }
-    }*/
     for( auto &it : model->pos)
     {
         uint32_t row = (movement_y + it.y) / BLOCK_SIZE;

@@ -35,8 +35,9 @@ class SkillSprite: public Sprite{
 public:
     SkillSprite(std::string name); 
     void blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera) override;
-private: //我将这些图片信息放到了构造函数中初始化，以避免和PersonSprite一样每次blit都要查一次表
-         //建议PersonSprite也这样
+private: 
+    //我将这些图片信息放到了构造函数中初始化，以避免和PersonSprite一样每次blit都要查一次表
+    //建议PersonSprite也这样
     uint32_t image_row_;
     uint32_t image_col_;
     uint32_t width_;
