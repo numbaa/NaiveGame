@@ -3,9 +3,9 @@
 #include "../scene/physicalspace.h"
 #include "../graphics/graphics.h"
 
-void Entity::updatePhysics(shared_ptr<PhysicalSpace> space)
+void Entity::updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
-    physics_->update(space);
+    physics_->update(scene, space);
 }
 void Entity::updateImage(shared_ptr<Camera> camera)
 {
@@ -23,9 +23,9 @@ Person::Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics)
 {
 }
 
-void Person ::updatePhysics(shared_ptr<PhysicalSpace> space)
+void Person ::updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
-    physics_->update(space);
+    physics_->update(scene, space);
 }
 
 void Person::updateImage(shared_ptr<Camera> camera)
@@ -39,9 +39,9 @@ Skill::Skill(shared_ptr<Physics>physics,shared_ptr<Graphics> graphics)
 {
 }
 
-void Skill::updatePhysics(shared_ptr<PhysicalSpace> space)
+void Skill::updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
-    physics_->update(space);
+    physics_->update(scene, space);
 } 
 void Skill::updateImage(shared_ptr<Camera> camera)
 {

@@ -56,17 +56,23 @@ void Scene::delPlayer()
     player_.reset();
 }
 
+void Scene::kill(shared_ptr<Entity> entity)
+{
+    dead_entities_.push_back(entity);
+}
+
 void Scene::update(shared_ptr<Camera> camera)
 {
     uint32_t curr = SDL_GetTicks();
     uint32_t lag = curr - last_update_;
-    //std::cout<<"curr: "<<curr<<"\tlast_update: "<<last_update_<<std::endl;
+    shared_ptr<Scene> curr_scene(this, [](Scene* p){ return; });
+
     while (lag  > UPDATE_GAP)
     {
-        player_->updatePhysics(space_);
+        player_->updatePhysics(curr_scene, space_);
         for (auto& entity : entities_)
         {
-            entity->updatePhysics(space_);
+            entity->updatePhysics(curr_scene, space_);
         }
         last_update_ = SDL_GetTicks();
         lag -= UPDATE_GAP;
@@ -82,4 +88,22 @@ void Scene::update(shared_ptr<Camera> camera)
         camera->refresh(player_->getX(), player_->getY());
         last_draw_ = SDL_GetTicks();
     }
+
+    //entities_ 不适合使用std::vector，性能跟不上，日后改
+    for (auto& et : dead_entities_)
+    {
+        /*
+        entities_.erase(std::find(entities_.begin(),
+                                  entities_.end(),
+                                  et));
+                                  */
+        auto it = std::find(entities_.begin(), entities_.end(), et);
+        if (it == entities_.end())
+        {
+            std::cout<<"Couldn't find entity"<<std::endl;
+            exit(-1);
+        }
+        entities_.erase(it);
+    }
+    dead_entities_.clear();
 }

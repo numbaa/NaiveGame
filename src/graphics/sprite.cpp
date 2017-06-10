@@ -81,7 +81,7 @@ void SkillSprite:: blit(shared_ptr<Physics> phy,shared_ptr<Camera> camera)
     //static uint32_t last_frames = 0;   //这个static变量导致技能只能释放一次
     if(survival_times_ <= last_frames_)
     {
-        //destoryEntity(entity);   
+        phy->suicide();
         return ;
     }
     uint32_t interval = survival_times_ / (image_row_ * image_col_);         //每张小图片占有的时间

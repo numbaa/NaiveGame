@@ -21,6 +21,7 @@ const uint32_t DRAW_GAP   = 10;
  */
 class Input;
 class Graphics;
+class Scene;
 
 //memetao:按照目前的情况，Entity都可以不用定义派生类了，
 //但是我还是觉得明确点好，索性为所有的"Entity"都显式声明
@@ -28,7 +29,7 @@ class Graphics;
 class Entity {
 public:
     Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics);
-    virtual void updatePhysics(shared_ptr<PhysicalSpace> space);
+    virtual void updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space);
     virtual void updateImage(shared_ptr<Camera> camera);
     virtual ~Entity() = default;
     void setX(uint32_t x) { physics_ -> setPos_x(x); }
@@ -51,7 +52,7 @@ protected:
 class Person : public Entity {
 public:
     Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics);
-    void updatePhysics(shared_ptr<PhysicalSpace> space) override;
+    void updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space) override;
     void updateImage(shared_ptr<Camera> camera) override;
 
 };
@@ -60,7 +61,7 @@ public:
 class Skill: public Entity {
 public:
     Skill(shared_ptr<Physics>physics,shared_ptr<Graphics> graphics);
-    void updatePhysics(shared_ptr<PhysicalSpace>space) override;
+    void updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>space) override;
     void updateImage(shared_ptr<Camera> camera) override;
 };
 

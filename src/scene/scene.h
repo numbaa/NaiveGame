@@ -27,6 +27,7 @@ public:
     void delEntity(shared_ptr<Entity> entity);
     void addPlayer(shared_ptr<Entity> player);
     void delPlayer();
+    void kill(shared_ptr<Entity> entity);
     std::string getName() const { return name_; }
     static shared_ptr<Scene> getInstance()
     {
@@ -46,6 +47,7 @@ private:
     string                  name_;
     shared_ptr<PhysicalSpace> space_;
     EntityPool              entities_;
+    EntityPool              dead_entities_;
     shared_ptr<Entity>      player_;
     uint32_t                last_update_;
     uint32_t                last_draw_;
