@@ -58,6 +58,7 @@ void Scene::delPlayer()
 
 void Scene::kill(shared_ptr<Entity> entity)
 {
+    //std::cout<<"Scene killing entity: "<<entity.get()<<std::endl;
     dead_entities_.push_back(entity);
 }
 
@@ -92,17 +93,19 @@ void Scene::update(shared_ptr<Camera> camera)
     //entities_ 不适合使用std::vector，性能跟不上，日后改
     for (auto& et : dead_entities_)
     {
-        /*
-        entities_.erase(std::find(entities_.begin(),
-                                  entities_.end(),
-                                  et));
-                                  */
         auto it = std::find(entities_.begin(), entities_.end(), et);
+        /*
+        for (auto& ent : entities_)
+        {
+            std::cout<<"entity in entities_: "<<ent.get()<<std::endl;
+        }
         if (it == entities_.end())
         {
-            std::cout<<"Couldn't find entity"<<std::endl;
+            std::cout<<"Couldn't find entity: "<<et.get()<<std::endl;
             exit(-1);
         }
+        */
+        space_->delModel(*it);
         entities_.erase(it);
     }
     dead_entities_.clear();

@@ -47,21 +47,26 @@ void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
 }
 
 Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model)
-    : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model), dead_(false)
+    : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model), status_(Life::Alive)
 {}
 void Physics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
-    if (dead_)
+    if (status_ == Life::ToKill)
     {
         //如何获取entity？
         //两种方案：
         //  1. 构造Physics时传入shared_ptr<Entity>
         //  2. 通过该update函数的参数 space ，曲折地获取
         auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.x + x_) / BLOCK_SIZE;
-        uint32_t col = (p.y + y_) / BLOCK_SIZE;
+        uint32_t row = (p.y + y_) / BLOCK_SIZE;
+        uint32_t col = (p.x + x_) / BLOCK_SIZE;
         shared_ptr<Entity> entity = space->getOwner(row, col);
         scene->kill(entity);
+        status_ = Life::Dead;
+        return;
+    }
+    else if (status_ == Life::Dead)
+    {
         return;
     }
     posUpdate(space);
@@ -125,13 +130,18 @@ void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
 }
 void PlayerPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
-    if (dead_)
+    if (status_ == Life::ToKill)
     {
         auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.x + x_) / BLOCK_SIZE;
-        uint32_t col = (p.y + y_) / BLOCK_SIZE;
+        uint32_t row = (p.y + y_) / BLOCK_SIZE;
+        uint32_t col = (p.x + x_) / BLOCK_SIZE;
         shared_ptr<Entity> entity = space->getOwner(row, col);
         scene->kill(entity);
+        status_ = Life::Dead;
+        return;
+    }
+    else if (status_ == Life::Dead)
+    {
         return;
     }
     shared_ptr <Command> cmd (new Command);
@@ -167,15 +177,19 @@ SkillPhysics::SkillPhysics(uint32_t x, uint32_t y,shared_ptr<Model> model)
 }
 void SkillPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>space)
 {
-    if (dead_)
+    if (status_ == Life::ToKill)
     {
         auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.x + x_) / BLOCK_SIZE;
-        uint32_t col = (p.y + y_) / BLOCK_SIZE;
+        uint32_t row = (p.y + y_) / BLOCK_SIZE;
+        uint32_t col = (p.x + x_) / BLOCK_SIZE;
         shared_ptr<Entity> entity = space->getOwner(row, col);
         scene->kill(entity);
+        status_ = Life::Dead;
         return;
-
+    }
+    else if (status_ == Life::Dead)
+    {
+        return;
     }
     posUpdate(space);
     //harms_属性等待PhysicalSpace

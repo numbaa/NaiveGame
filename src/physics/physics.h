@@ -17,6 +17,8 @@ class Scene;
  */
 class Physics {
 public:
+    enum class Life { Alive, ToKill, Dead };
+
     Physics(uint32_t x, uint32_t y, shared_ptr<Model> model);
     virtual void update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space);
     virtual ~Physics() = default;
@@ -36,7 +38,7 @@ public:
     uint32_t getHeight() const { return model_->getHeight(); }
     void setWidth(uint32_t width) { model_->setWidth(width); }
     void setHeight(uint32_t height) { model_->setHeight(height); }
-    void suicide() { dead_ = true; }
+    void suicide() { status_ = Life::ToKill; }
     //ugly
     shared_ptr<Model> getModel() { return model_; }
 protected:
@@ -45,7 +47,7 @@ protected:
     uint32_t speed_x_;  
     uint32_t speed_y_;  
     shared_ptr<Model>    model_;
-    bool     dead_;
+    Life                 status_;
     void posUpdate(shared_ptr<PhysicalSpace> space);
 };
 //需要等到PhysicalSpace实现后，再等进一步实现
