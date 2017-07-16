@@ -9,7 +9,8 @@
 #include <cstdint>
 #include "../config/config.h"
 
-
+//temporary
+#include <iostream>
 //下 左  右  上
 enum DIR{
     dir_down = 0,

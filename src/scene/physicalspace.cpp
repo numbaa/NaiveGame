@@ -27,6 +27,7 @@ void PhysicalSpace::addGrid(shared_ptr<Entity>& entity)
     int32_t y = static_cast<int32_t>(entity->getY());
     for( auto& p : entity->getModel()->pos)
     {
+        //Mark:这里可以优化
         uint32_t row = (y + p.y ) / BLOCK_SIZE;
         uint32_t col = (x + p.x ) / BLOCK_SIZE; 
         grid_[row][col] = Block();

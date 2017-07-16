@@ -29,7 +29,9 @@ Surface::Surface(std::string picture_name)
     SDL_FreeSurface(loaded);
     loaded = nullptr;
     assert(optimizedImage != NULL);
-    surface_.reset(optimizedImage);
+    //surface_.reset(optimizedImage);
+    surface_.reset(optimizedImage,SurfaceDeleter());
+    
 }
 
 void Surface::create(uint16_t width, uint16_t height)
