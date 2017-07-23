@@ -1,6 +1,7 @@
 #include "physics.h"
 #include <cassert>
 #include "../scene/scene.h"
+#include "../entity/entity.h"
 #include <iostream>
 
 #define STEP_DEFAULT    (2)
@@ -17,50 +18,90 @@ shared_ptr<Entity> createSkill(string,uint32_t,uint32_t,int32_t,int32_t);
 */
 //limit(x_,y_);需要知道屏幕尺寸
 
-
 void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
-{
-    int32_t x_old = x_;
-    int32_t y_old = y_;
-    int32_t x = x_ + speed_x_;
-    int32_t y = y_ + speed_y_;
+{  
+    (void) space;
+    std::cout<<"Physics::posUpdate() is empty"<<std::endl;
+    /*uint32_t x = x_ + speed_x_;
+    uint32_t y = y_ + speed_y_;
 
-    if (space->collision(this->getModel(), x, y) == false)
-    {
-        x_ = x;
-        y_ = y;
-    }
-    if( x == x_old && y == y_old )   //下面的步骤干的事情有点多，直接跳过
-        return ;
-    //updateModel  ,这里我假设获取的到的确是原始的entity
-    uint32_t row_old = y_old / BLOCK_SIZE;
-    uint32_t col_old = x_old / BLOCK_SIZE;
-    shared_ptr<Entity> owner = space->getOwner(row_old,col_old); 
-    //MemeTao:
-    //Player 是独立于EntityPool之外的，取不到enetity,但是这个函数是会被它调用到的
-    //所以要加下面的判断
-    //还要注意的是：Player的特殊性，导致只能它去碰撞别人，而别人缺碰不到它
-    //这应该是个BUG吧
-    if(owner == nullptr)     
-        return ;
-    space->moveGrid(x_old,y_old,owner);
+    collsnRes res = space->collision(this->getModel(), x, y);
+    if (res.res_ == false)  //没有阻碍
+    {     
+        shared_ptr<Entity> entity(owner_); 
+        space->updateModel(entity,x,y);
+        x_ = x; y_ = y;
+    }*/
+    //...
+
 }
-
-Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model)
-    : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model), status_(Life::Alive)
+void PlayerPhysics::posUpdate(shared_ptr<PhysicalSpace> space)
+{
+    uint32_t x = x_ + speed_x_;
+    uint32_t y = y_ + speed_y_;
+   
+    //即使坐标没有变化,还是得更新,因为 它现在或许就站在Skill范围内 
+    //所以应该是持续掉血的
+    if(x!=x_)
+        std::cout<<"x_"<<x_<<" x:"<<x<<std::endl;
+    collsnRes res = space->collision(this->getModel(), x, y);
+    if (res.res_ == false)  //没有阻碍
+    {     
+        shared_ptr<Entity> entity(owner_); 
+        healthy_ -= res.harms_;
+        space->moveModel(entity,x,y); //会更改坐标
+        return ;
+    }
+    //...
+}
+void SkillPhysics::posUpdate(shared_ptr<PhysicalSpace> space)
+{
+    uint32_t x = x_ + speed_x_;
+    uint32_t y = y_ + speed_y_;
+    if(speed_x_ != 0 && speed_y_ != 0) 
+    {
+        if( space->isOutOfRang(this->getModel(),x,y) != true)
+        {
+            return;
+        }
+    }
+    //skill类 不参与碰撞检测
+    x_ = x; 
+    y_ = y;
+    //更改后，SKILL不再主动对Creature伤害,因为实现特别困难
+    //转为增加BLOCK的harm记录，间接影响Creature
+    
+    //对所有路过的entity造成伤害
+    //每物理更新一次 就对entities伤害一次
+    /*uint32_t row = y_ / BLOCK_SIZE;
+    uint32_t col = x_ / BLOCK_SIZE;
+    std::set<shared_ptr<Entity>> owners = space->getOwners(row,col);
+    for( auto it : owners)
+    {
+       //harmToEntity(it);
+    }*/
+    //update model
+    shared_ptr<Entity> entity( owner_);
+    space->moveModel(entity,x_,y_);
+}
+Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model,BlockProp bp)
+    : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model),bp_(bp),status_(Life::Alive),owner_ (nullptr)
 {}
+
+//感觉这个地方有安全性问题
+bool Physics::setOwner(Entity* entity)
+{
+    if(owner_ != nullptr)
+        return false;
+    owner_ = entity;
+    return true;
+}
 void Physics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
     if (status_ == Life::ToKill)
     {
-        //如何获取entity？
-        //两种方案：
-        //  1. 构造Physics时传入shared_ptr<Entity>
-        //  2. 通过该update函数的参数 space ，曲折地获取
-        auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.y + y_) / BLOCK_SIZE;
-        uint32_t col = (p.x + x_) / BLOCK_SIZE;
-        shared_ptr<Entity> entity = space->getOwner(row, col);
+        //Modify:我改用你之前的第1个方案
+        shared_ptr<Entity> entity(owner_);
         scene->kill(entity);
         status_ = Life::Dead;
         return;
@@ -132,10 +173,7 @@ void PlayerPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> sp
 {
     if (status_ == Life::ToKill)
     {
-        auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.y + y_) / BLOCK_SIZE;
-        uint32_t col = (p.x + x_) / BLOCK_SIZE;
-        shared_ptr<Entity> entity = space->getOwner(row, col);
+        shared_ptr<Entity> entity(owner_) ;
         scene->kill(entity);
         status_ = Life::Dead;
         return;
@@ -179,10 +217,7 @@ void SkillPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>spac
 {
     if (status_ == Life::ToKill)
     {
-        auto& p = this->getModel()->pos[0];
-        uint32_t row = (p.y + y_) / BLOCK_SIZE;
-        uint32_t col = (p.x + x_) / BLOCK_SIZE;
-        shared_ptr<Entity> entity = space->getOwner(row, col);
+        shared_ptr<Entity> entity(owner_);
         scene->kill(entity);
         status_ = Life::Dead;
         return;
@@ -194,7 +229,6 @@ void SkillPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>spac
     posUpdate(space);
     //harms_属性等待PhysicalSpace
 }
-
 void PlayerPhysics::skill_Q()
 {
     switch (dir_cur_)

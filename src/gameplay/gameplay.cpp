@@ -15,7 +15,7 @@ shared_ptr<Entity> make_player()
     shared_ptr<Sprite> sprite(new PersonSprite(player_name, phy->getPos_x(), phy->getPos_y()));
     sprite->setColorKey(0xff, 0xff, 0xff);
     shared_ptr<Graphics> grph(new PlayerGraphics(player_name,sprite));   
-    shared_ptr<Entity> player(new Person(phy, grph));
+    shared_ptr<Entity> player(new Creature(phy, grph));
     return player;
 }
 
