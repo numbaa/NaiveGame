@@ -65,12 +65,16 @@ void Scene::update(shared_ptr<Camera> camera)
     uint32_t curr = SDL_GetTicks();
     uint32_t lag = curr - last_update_;
     shared_ptr<Scene> curr_scene(this, [](Scene* p){ return; });
-    auto entitiesCP = entities_;
+    auto entitiesTemp = entities_;
     while (lag  > UPDATE_GAP)
     {
+        //Modify:将player统一到entities中，从此player和entity地位一样。
         //player_->updatePhysics(curr_scene, space_);
-        //for (auto& entity : entities_)
-        for (auto& entity : entitiesCP)
+        //for (auto& entity : entities_)   
+        //Modify:这里我碰到一个问题，SKILL产生的新entity一旦在for循环进行中添加进entities队列中，直接
+        //导致了段错误,而本来是没有这个毛病的。这个现象应该是正常的，我不太确定。
+        //我临时使用这个策略,暂时用一下
+        for (auto& entity : entitiesTemp)
         {
             entity->updatePhysics(curr_scene, space_);
         }
@@ -81,7 +85,7 @@ void Scene::update(shared_ptr<Camera> camera)
     {
         //player_->updateImage(camera);
         //for (auto& entity : entities_)
-        for (auto& entity : entitiesCP)
+        for (auto& entity : entitiesTemp)
         {
             entity->updateImage(camera);
         }
