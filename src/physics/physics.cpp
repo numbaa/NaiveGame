@@ -3,35 +3,16 @@
 #include "../scene/scene.h"
 #include "../entity/entity.h"
 #include <iostream>
-
+#include "../scene/physicalspace.h"
 #define STEP_DEFAULT    (2)
 
 class Entity;
 shared_ptr<Entity> createSkill(string,uint32_t,uint32_t,int32_t,int32_t);
-/*
- * 要变成一个函数
-#define posUpdate() \
-{\
-    x_ += speed_x_;\
-    y_ += speed_y_;\
-}   
-*/
-//limit(x_,y_);需要知道屏幕尺寸
 
 void Physics::posUpdate(shared_ptr<PhysicalSpace> space)
 {  
     (void) space;
     std::cout<<"Physics::posUpdate() is empty"<<std::endl;
-    /*uint32_t x = x_ + speed_x_;
-    uint32_t y = y_ + speed_y_;
-
-    collsnRes res = space->collision(this->getModel(), x, y);
-    if (res.res_ == false)  //没有阻碍
-    {     
-        shared_ptr<Entity> entity(owner_); 
-        space->updateModel(entity,x,y);
-        x_ = x; y_ = y;
-    }*/
     //...
 
 }
@@ -39,35 +20,32 @@ void PlayerPhysics::posUpdate(shared_ptr<PhysicalSpace> space)
 {
     uint32_t x = x_ + speed_x_;
     uint32_t y = y_ + speed_y_;
-   
     //即使坐标没有变化,还是得更新,因为 它现在或许就站在Skill范围内 
     //所以应该是持续掉血的
-    if(x!=x_)
-        std::cout<<"x_"<<x_<<" x:"<<x<<std::endl;
     collsnRes res = space->collision(this->getModel(), x, y);
     if (res.res_ == false)  //没有阻碍
     {     
-        shared_ptr<Entity> entity(owner_); 
         healthy_ -= res.harms_;
-        space->moveModel(entity,x,y); //会更改坐标
-        return ;
+        space->moveModel(owner_,x,y); //会更改坐标
     }
     //...
 }
 void SkillPhysics::posUpdate(shared_ptr<PhysicalSpace> space)
 {
+    static int i = 0;
+    i++;
     uint32_t x = x_ + speed_x_;
     uint32_t y = y_ + speed_y_;
-    if(speed_x_ != 0 && speed_y_ != 0) 
+    if(speed_x_ != 0 || speed_y_ != 0) 
     {
-        if( space->isOutOfRang(this->getModel(),x,y) != true)
+        if( space->isOutOfRang(this->getModel(),x,y) == true)
         {
+            speed_x_ = 0;
+            speed_y_ = 0; //停止
             return;
         }
     }
     //skill类 不参与碰撞检测
-    x_ = x; 
-    y_ = y;
     //更改后，SKILL不再主动对Creature伤害,因为实现特别困难
     //转为增加BLOCK的harm记录，间接影响Creature
     
@@ -81,8 +59,7 @@ void SkillPhysics::posUpdate(shared_ptr<PhysicalSpace> space)
        //harmToEntity(it);
     }*/
     //update model
-    shared_ptr<Entity> entity( owner_);
-    space->moveModel(entity,x_,y_);
+    space->moveModel(owner_,x,y);
 }
 Physics::Physics(uint32_t x, uint32_t y, shared_ptr<Model> model,BlockProp bp)
     : x_(x),y_(y),speed_x_(0),speed_y_(0), model_(model),bp_(bp),status_(Life::Alive),owner_ (nullptr)
@@ -94,14 +71,21 @@ bool Physics::setOwner(Entity* entity)
     if(owner_ != nullptr)
         return false;
     owner_ = entity;
+    std::cout<<"initializing owner_:"<<owner_<<std::endl;
     return true;
 }
+inline shared_ptr<Entity> Physics::helpFindOwner()
+{
+    shared_ptr<Entity> fakeOwner (owner_,FakeEntityDelete());
+    return fakeOwner;
+}
+
 void Physics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
     if (status_ == Life::ToKill)
     {
         //Modify:我改用你之前的第1个方案
-        shared_ptr<Entity> entity(owner_);
+        shared_ptr<Entity> entity = helpFindOwner();
         scene->kill(entity);
         status_ = Life::Dead;
         return;
@@ -169,11 +153,12 @@ void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
         break;
     }
 }
+
 void PlayerPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
     if (status_ == Life::ToKill)
     {
-        shared_ptr<Entity> entity(owner_) ;
+        shared_ptr<Entity> entity = helpFindOwner() ;
         scene->kill(entity);
         status_ = Life::Dead;
         return;
@@ -217,7 +202,7 @@ void SkillPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>spac
 {
     if (status_ == Life::ToKill)
     {
-        shared_ptr<Entity> entity(owner_);
+        shared_ptr<Entity> entity = helpFindOwner();
         scene->kill(entity);
         status_ = Life::Dead;
         return;

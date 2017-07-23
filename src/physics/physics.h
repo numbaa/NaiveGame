@@ -5,7 +5,6 @@
 #include "model.h"
 using std::shared_ptr;
 using std::string;
-
 class Scene;
 class PhysicalSpace;
 class Entity;
@@ -43,6 +42,8 @@ public:
     //ugly
     shared_ptr<Model> getModel()const { return model_; }
     BlockProp getBlockProp(void)const { return bp_;    }
+
+    shared_ptr<Entity> helpFindOwner();
     //void setBlcokProp(BlockProp bp);
 protected:
     uint32_t            x_;

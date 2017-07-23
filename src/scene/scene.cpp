@@ -47,10 +47,17 @@ void Scene::delPlayer()
     player_.reset();
 }
 
+//经过Physics类，传过来的entity 是个假的entity
+//通过find，找出真正的那个
 void Scene::kill(shared_ptr<Entity> entity)
 {
-    //std::cout<<"Scene killing entity: "<<entity.get()<<std::endl;
-    dead_entities_.push_back(entity);
+    auto it = std::find(entities_.begin(),entities_.end(),entity);
+    //already exists
+    if(it == entities_.end())
+    {
+       exit(-1); 
+    } 
+    dead_entities_.push_back(*it);
 }
 
 void Scene::update(shared_ptr<Camera> camera)
@@ -58,22 +65,23 @@ void Scene::update(shared_ptr<Camera> camera)
     uint32_t curr = SDL_GetTicks();
     uint32_t lag = curr - last_update_;
     shared_ptr<Scene> curr_scene(this, [](Scene* p){ return; });
-
+    auto entitiesCP = entities_;
     while (lag  > UPDATE_GAP)
     {
-        player_->updatePhysics(curr_scene, space_);
-        for (auto& entity : entities_)
+        //player_->updatePhysics(curr_scene, space_);
+        //for (auto& entity : entities_)
+        for (auto& entity : entitiesCP)
         {
             entity->updatePhysics(curr_scene, space_);
         }
         last_update_ = SDL_GetTicks();
         lag -= UPDATE_GAP;
     }
-
     if (curr-last_draw_ > DRAW_GAP)
     {
-        player_->updateImage(camera);
-        for (auto& entity : entities_)
+        //player_->updateImage(camera);
+        //for (auto& entity : entities_)
+        for (auto& entity : entitiesCP)
         {
             entity->updateImage(camera);
         }

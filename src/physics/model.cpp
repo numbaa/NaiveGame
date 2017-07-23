@@ -5,6 +5,7 @@ Model::Model(uint32_t width, uint32_t height)
     : width_(width), height_(height)
 {
     pos.reserve(width * height);
+    std::cout<<"model width:"<<width_<<" height:"<<height_<<std::endl;
     int32_t half_x = width_ / 2;
     int32_t half_y = height_ / 2;
     for (int i=-half_x; i<half_x; i++)

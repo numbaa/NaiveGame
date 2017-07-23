@@ -22,6 +22,17 @@ struct collsnRes {
     collsnRes(bool res = false,int harms = 0)
         :res_(res),harms_(harms) {}
 };
+//为了解决"由裸指针制作的shared_ptr<>引用计数到0导致的非必要内存释放"
+//目的是代替 "delete释放内存",转为什么都不做
+//暂时不控制权限
+class FakeEntityDelete{
+public:
+    void operator() (Entity* p)
+    {
+        (void) p;  
+        return ;
+    }
+};
 class PhysicalSpace {
 
     struct Block {
@@ -37,12 +48,13 @@ class PhysicalSpace {
     using ModelPool = std::map<shared_ptr<Model>, shared_ptr<Entity>>;
 public:
     PhysicalSpace(uint32_t width, uint32_t height);
-    bool addGrid(shared_ptr<Entity>& entity);
-    bool delGrid(shared_ptr<Entity>& entity);
+    bool addGrid(shared_ptr<Entity> entity);
+    bool delGrid(shared_ptr<Entity> entity);
+    shared_ptr<Entity> delGrid(Entity* pEntity);
     void clearGrid(uint32_t x,uint32_t y);
     void addModel(shared_ptr<Entity> entity);
     void delModel(shared_ptr<Entity> entity);
-    void moveModel(shared_ptr<Entity> entity,uint32_t x,uint32_t y);
+    void moveModel(Entity* entity,uint32_t x,uint32_t y);
     void updateModel(shared_ptr<Entity>entity,uint32_t x,uint32_t y);
     collsnRes collision(shared_ptr<Model> model, int32_t x, int32_t y);
     bool isOutOfRang(shared_ptr<Model>model,uint32_t x,uint32_t y);

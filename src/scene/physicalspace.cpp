@@ -20,73 +20,121 @@ PhysicalSpace::PhysicalSpace(uint32_t width, uint32_t height)
     }
 }
 //在grid增加关于这个entity的信息
-bool PhysicalSpace::addGrid(shared_ptr<Entity>& entity)
+bool PhysicalSpace::addGrid(shared_ptr<Entity> entity)
 {
     int32_t x = static_cast<int32_t>(entity->getX());
     int32_t y = static_cast<int32_t>(entity->getY());
-    uint32_t row_last = INT_MAX;
-    uint32_t col_last = INT_MAX;
     for( auto& p : entity->getModel()->pos)
     {
-        //Mark:这里优化了一点
-        //测试后发现,100个pos,真正需要写入
-        //信息的pos不到10个
-        uint32_t row = (y + p.y ) / BLOCK_SIZE;
-        uint32_t col = (x + p.x ) / BLOCK_SIZE; 
-        if(row != row_last || col != col_last)
-        {   
-            auto& thisBlock = grid_[row][col];
-            auto entityBlockProp = entity->getBlockProp();
-
-            thisBlock.owners_.insert(entity); 
-            thisBlock.bp_.harm_ += entityBlockProp.harm_;
-            if(thisBlock.bp_.solid_!= true)
-            {
-                thisBlock.bp_.solid_ = entityBlockProp.solid_;
-            }
-
-            row_last = row;
-            col_last = col;
+        //uint32_t row = (y + p.y ) / BLOCK_SIZE;
+        //uint32_t col = (x + p.x ) / BLOCK_SIZE; 
+        uint32_t row = y / BLOCK_SIZE + p.y;
+        uint32_t col = x / BLOCK_SIZE + p.x;
+        if(row > height_ || col > width_)  
+        {
+            exit(-1);
+        }
+        auto& thisBlock = grid_[row][col];
+        auto entityBlockProp = entity->getBlockProp();
+        thisBlock.owners_.insert(entity); 
+        thisBlock.bp_.harm_ += entityBlockProp.harm_;
+        if(thisBlock.bp_.solid_!= true)
+        {
+            thisBlock.bp_.solid_ = entityBlockProp.solid_;
         }
     }
     return true;
 }
 //在grid中删除关于entity的信息
-bool PhysicalSpace::delGrid(shared_ptr<Entity>& entity)
+bool PhysicalSpace::delGrid(shared_ptr<Entity> entity)
 {
     int32_t x = static_cast<int32_t>(entity->getX());
     int32_t y = static_cast<int32_t>(entity->getY());
-    uint32_t row_last = INT_MAX;
-    uint32_t col_last = INT_MAX;
-
     for (auto& p : entity->getModel()->pos)
     {
-        uint32_t row = (y + p.y) /BLOCK_SIZE;
-        uint32_t col = (x + p.x) /BLOCK_SIZE;
-        if(row != row_last || col != col_last)
+        uint32_t row = y / BLOCK_SIZE + p.y;
+        uint32_t col = x / BLOCK_SIZE + p.x;
+
+        auto& thisBlock = grid_[row][col];
+        BlockProp entityBlockProp = entity->getBlockProp();
+
+        auto owner = thisBlock.owners_.find(entity);
+        if(owner == thisBlock.owners_.end())
         {
-            auto& thisBlock = grid_[row][col];
-            BlockProp entityBlockProp = entity->getBlockProp();
-            thisBlock.owners_.erase(entity);
+            exit(-1);
+        }
+        if( thisBlock.owners_.erase(*owner))  //有这个entity
+        {
             thisBlock.bp_.harm_ -= entityBlockProp.harm_;
             if(thisBlock.bp_.solid_ == true && entityBlockProp.solid_ == true)
             {
-                thisBlock.bp_.solid_ = false;
+               thisBlock.bp_.solid_ = false;
             }
-
-            row_last = row;
-            col_last = col;
         }
+        else
+        {
+            exit(-1);
+        }
+
     }
     return true;
+}
+//"在Entity中引入 owner_,有很多便利，却带来
+//很多安全隐患“,比如 shared_ptr<Entity> ptr(owner_) 和
+//真正的shared_ptr<Entity> entity 之间有区别，虽然 ptr == entity
+//但是 ptr的引用计数是1
+//这个重载把版本就是为了解决上面这个麻烦
+//为了给addGrid提供参数,它返回了一个真正的entity智能指针
+shared_ptr<Entity> PhysicalSpace::delGrid(Entity* entity)
+{
+    shared_ptr<Entity> realSrc = nullptr;
+    shared_ptr<Entity> fakeSrc (entity,FakeEntityDelete());
+    int32_t x = static_cast<int32_t>(entity->getX());
+    int32_t y = static_cast<int32_t>(entity->getY());
+
+    for (auto& p : entity->getModel()->pos)
+    {
+        uint32_t row = y / BLOCK_SIZE + p.y;
+        uint32_t col = x / BLOCK_SIZE + p.x;
+
+        auto& thisBlock = grid_[row][col];
+        BlockProp entityBlockProp = entity->getBlockProp();
+
+        auto owner = thisBlock.owners_.find(fakeSrc);
+        if(owner == thisBlock.owners_.end())
+        {
+            std::cout<<"can not find,owners"<<std::endl;
+            exit(-1);
+        }
+        if(realSrc == nullptr)
+        {
+            realSrc = *owner;
+        }
+        if( thisBlock.owners_.erase(*owner))  //有这个entity
+        {
+            thisBlock.bp_.harm_ -= entityBlockProp.harm_;
+            if(thisBlock.bp_.solid_ == true && entityBlockProp.solid_ == true)
+            {
+               thisBlock.bp_.solid_ = false;
+            }
+        }
+        else
+        {
+            std::cout<<"can not erase"<<std::endl;
+            exit(-1);
+        }
+    }
+    return realSrc;
 }
 //MemeTao:我认为ModelPool是多余的
 //因为Model可以直接由entity获取
 void PhysicalSpace::addModel(shared_ptr<Entity> entity)
 {
+    std::cout<<"add a modle,entity:"<<entity.get()<<std::endl;
     assert( mp_.find(entity->getModel()) == mp_.end());
     addGrid(entity);
     mp_[ entity->getModel() ] = entity; 
+    std::cout<<"add sucess,entity:"<<entity.get()<<std::endl;
 }
 //清除grid中的一块区域
 void PhysicalSpace::clearGrid(uint32_t x,uint32_t y)
@@ -96,6 +144,7 @@ void PhysicalSpace::clearGrid(uint32_t x,uint32_t y)
 }
 void PhysicalSpace::delModel(shared_ptr<Entity> entity)
 {
+    std::cout<<"del Model"<<std::endl;
     assert( mp_.find(entity->getModel()) != mp_.end());
     delGrid(entity);
     ModelPool::iterator it = mp_.find(entity->getModel());
@@ -103,21 +152,19 @@ void PhysicalSpace::delModel(shared_ptr<Entity> entity)
 }
 //移动model到指定坐标
 //移动后，会主动更新坐标
-void PhysicalSpace::moveModel(shared_ptr<Entity> entity,uint32_t x,uint32_t y)
+void PhysicalSpace::moveModel(Entity* entity,uint32_t x,uint32_t y)
 {
-    std::cout<<"x_old:"<<entity->getX()<<" y_old:"<<entity->getY()<<std::endl;
-    std::cout<<"x:"<<x<<" y:"<<y<<std::endl;
     //删除原有grid;
-    delGrid(entity);
+    shared_ptr<Entity> realSrc = delGrid(entity);
     //增加指定位置grid
     entity->setX(x);
     entity->setY(y);
-    addGrid(entity);
+    addGrid(realSrc);
 }
 //更新entity的model到指定坐标
 void PhysicalSpace::updateModel(shared_ptr<Entity> entity,uint32_t x,uint32_t y)
 {
-    moveModel(entity,x,y);
+    ;
 }
 //碰撞检测：可能只有Creature才用这个版本
 collsnRes PhysicalSpace::collision(shared_ptr<Model>model, int32_t movement_x, int32_t movement_y)
@@ -126,20 +173,27 @@ collsnRes PhysicalSpace::collision(shared_ptr<Model>model, int32_t movement_x, i
     uint32_t col_last = INT_MAX;
     int harm_min = 0;//负的表示 治疗 
     int harm_max = 0;
-    for( auto &it : model->pos)
+    for( auto &p : model->pos)
     {
-        uint32_t row = (movement_y + it.y) / BLOCK_SIZE;
-        uint32_t col = (movement_x + it.x) / BLOCK_SIZE; 
+        //uint32_t row = (movement_y + it.y) / BLOCK_SIZE;
+        //uint32_t col = (movement_x + it.x) / BLOCK_SIZE; 
+        uint32_t row = movement_y / BLOCK_SIZE + p.y;
+        uint32_t col = movement_x / BLOCK_SIZE + p.x;
+
         if(row != row_last || col != col_last)
         {
             row_last = row;
             col_last = col;
 
             auto& thisBlock = grid_[row][col];
-            shared_ptr<Entity> entity = mp_[model];  //如果为Nullptr,说明是Player
-            if(thisBlock.bp_.solid_ == true && thisBlock.owners_.find(entity) == thisBlock.owners_.end() && entity != nullptr)
+            shared_ptr<Entity> entity = mp_[model]; 
+            if(entity == nullptr)
             {
-                    return collsnRes(true);
+                exit(-1);
+            }
+            if(thisBlock.bp_.solid_ == true && thisBlock.owners_.find(entity) == thisBlock.owners_.end() )
+            {
+                return collsnRes(true);
             }
             else 
             {
@@ -159,8 +213,8 @@ bool PhysicalSpace::isOutOfRang(shared_ptr<Model> model,uint32_t movement_x,uint
 {
     for( auto &it : model->pos)
     {
-        uint32_t row = (movement_y + it.y) / BLOCK_SIZE;
-        uint32_t col = (movement_x + it.x) / BLOCK_SIZE; 
+        uint32_t row = movement_y / BLOCK_SIZE + it.y;
+        uint32_t col = movement_x / BLOCK_SIZE + it.x; 
         if(row >= height_ || col >= width_ )
         {
             return true;
