@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <set>
 using std::shared_ptr;
 
 /*
@@ -14,50 +15,54 @@ using std::shared_ptr;
  */
 class Entity;   //头文件里没有用到Entity的函数和属性，只需要一个声明
 class Model;
-
-//const uint32_t BLOCK_SIZE = 6;     //每个Block大小为6*6，6这个数是暂时乱写上去的
-
+struct collsnRes {
+    bool res_; //true false
+    int harms_;
+    //dx,dy
+    collsnRes(bool res = false,int harms = 0)
+        :res_(res),harms_(harms) {}
+};
+//为了解决"由裸指针制作的shared_ptr<>引用计数到0导致的非必要内存释放"
+//目的是代替 "delete释放内存",转为什么都不做
+//暂时不控制权限
+class FakeEntityDelete{
+public:
+    void operator() (Entity* p)
+    {
+        (void) p;  
+        return ;
+    }
+};
 class PhysicalSpace {
 
     struct Block {
-        Block() : solid(false), harm(0), owner(nullptr) {}
-        Block(const Block& block);
-        ~Block();
-        Block& operator=(const Block& block);
-        bool                solid;
-        uint32_t            harm;
-        shared_ptr<Entity>  owner;
+        Block()
+           :bp_(BlockProp(false,0)) {} ;  //默认可穿透
+        //Block (const Block& block);             //合成的应该没毛病
+        //Block& operator = (const Block& block); //合成的应该没毛病
+        BlockProp bp_;
+        std::set< shared_ptr<Entity> > owners_; 
     };
 
-    //tricky，因为要实现：
-    //  1. 长、宽不是BLOCK_SIZE的倍数不允许构造PhysicalSpace
-    //  2. 通过条件1后，用((width / BLOCK_SIZE), (height / BLOCK_SIZE))作为大小初始化grid_这个2维vector
-    //就需要像这样使用一个静态函数
-    static uint32_t valid(uint32_t value)
-    {
-        if (value % BLOCK_SIZE != 0)
-        {
-            std::cout<<"Error: 场景长宽必需是"<<BLOCK_SIZE<<"的倍数。"<<std::endl;
-            std::exit(-1);
-        }
-        return value / BLOCK_SIZE;
-    }
     using Grid = std::vector<std::vector<Block>>;
     using ModelPool = std::map<shared_ptr<Model>, shared_ptr<Entity>>;
 public:
     PhysicalSpace(uint32_t width, uint32_t height);
-    void addGrid(shared_ptr<Entity>&);
-    void clearGrid(shared_ptr<Entity>&);
+    bool addGrid(shared_ptr<Entity> entity);
+    bool delGrid(shared_ptr<Entity> entity);
+    shared_ptr<Entity> delGrid(Entity* pEntity);
+    void clearGrid(uint32_t x,uint32_t y);
     void addModel(shared_ptr<Entity> entity);
     void delModel(shared_ptr<Entity> entity);
-    void moveGrid(int32_t x,int32_t y,shared_ptr<Entity>& owner);
-    bool collision(shared_ptr<Model> model, int32_t x, int32_t y);
-    //暂时这么干吧
-    const shared_ptr<Entity> getOwner(uint32_t row , uint32_t col) { return grid_[row][col].owner;}
+    void moveModel(Entity* entity,uint32_t x,uint32_t y);
+    void updateModel(shared_ptr<Entity>entity,uint32_t x,uint32_t y);
+    collsnRes collision(shared_ptr<Model> model, int32_t x, int32_t y);
+    bool isOutOfRang(shared_ptr<Model>model,uint32_t x,uint32_t y);
+    std::set<shared_ptr<Entity>> getOwners(uint32_t row,uint32_t col);
 private:
-    uint32_t width_;
-    uint32_t height_;
-    Grid     grid_;
+    uint32_t    width_;
+    uint32_t    height_;
+    Grid        grid_;
     ModelPool   mp_;
 };
 

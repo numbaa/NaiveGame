@@ -40,7 +40,8 @@ public:
     uint32_t getWidth() const { return physics_->getWidth(); }
     uint32_t getHeight() const { return physics_->getHeight(); }
     //ugly
-    shared_ptr<Model> getModel() { return physics_->getModel(); }
+    shared_ptr<Model> getModel()const { return physics_->getModel(); }
+    BlockProp getBlockProp()const { return physics_->getBlockProp();}
     //...
 protected:
     shared_ptr<Physics>     physics_;
@@ -48,13 +49,12 @@ protected:
     //...
 };
 
-//Person  可以理解为每一个活的东西
-class Person : public Entity {
+//Creature  可以理解为每一个活的东西
+class Creature : public Entity {
 public:
-    Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics);
+    Creature(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics);
     void updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space) override;
     void updateImage(shared_ptr<Camera> camera) override;
-
 };
 
 //Skill类

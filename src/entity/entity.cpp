@@ -15,20 +15,21 @@ void Entity::updateImage(shared_ptr<Camera> camera)
 Entity::Entity(shared_ptr<Physics> physics, shared_ptr<Graphics> graphics)
     : physics_(physics), graphics_(graphics)
 {
+    physics_->setOwner(this);
 }
 
-//Person 类
-Person::Person(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics)
+//Creature 类
+Creature::Creature(shared_ptr<Physics>physics,shared_ptr<Graphics>graphics)
      :Entity(physics,graphics) 
 {
 }
 
-void Person ::updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
+void Creature ::updatePhysics(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace> space)
 {
     physics_->update(scene, space);
 }
 
-void Person::updateImage(shared_ptr<Camera> camera)
+void Creature::updateImage(shared_ptr<Camera> camera)
 {
     graphics_->update(physics_,camera);
 }
