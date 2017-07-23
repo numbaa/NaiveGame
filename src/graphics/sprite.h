@@ -13,7 +13,7 @@ class Sprite {
 public:
     Sprite(string name);
     virtual void blit(std::shared_ptr<Physics> phy, shared_ptr<Camera> camera);
-    virtual ~Sprite() = default;
+    virtual ~Sprite() = default; 
     void setColorKey(uint8_t r, uint8_t g, uint8_t b);
 protected:
     void sub_blit(int16_t x, int16_t y, uint16_t w, uint16_t h, shared_ptr<Physics> phy, shared_ptr<Camera> camera);

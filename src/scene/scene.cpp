@@ -4,15 +4,6 @@
 #include <algorithm>
 #include <iostream>
 
-/*Scene::Scene(string name,shared_ptr<PhysicalSpace> space, std::string scene_name)
-     :  bg_(std::make_shared<Background>(Background(name))),
-        name_(scene_name),
-        space_(space),
-        player_(nullptr),
-        last_update_(SDL_GetTicks()),
-        last_draw_(SDL_GetTicks())
-{
-}*/
 shared_ptr<Scene> Scene::instance_ = nullptr;
 Scene::Scene()
     :bg_( nullptr ),
@@ -89,22 +80,10 @@ void Scene::update(shared_ptr<Camera> camera)
         camera->refresh(player_->getX(), player_->getY());
         last_draw_ = SDL_GetTicks();
     }
-
     //entities_ 不适合使用std::vector，性能跟不上，日后改
     for (auto& et : dead_entities_)
     {
         auto it = std::find(entities_.begin(), entities_.end(), et);
-        /*
-        for (auto& ent : entities_)
-        {
-            std::cout<<"entity in entities_: "<<ent.get()<<std::endl;
-        }
-        if (it == entities_.end())
-        {
-            std::cout<<"Couldn't find entity: "<<et.get()<<std::endl;
-            exit(-1);
-        }
-        */
         space_->delModel(*it);
         entities_.erase(it);
     }

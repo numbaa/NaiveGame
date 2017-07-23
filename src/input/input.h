@@ -16,6 +16,7 @@ using std::make_shared;
 class Input {
 public:
     virtual void update() = 0;
+    virtual ~Input() = default;
     virtual shared_ptr<Command> getCommand() = 0;
 protected:
     queue <shared_ptr<Command>> cmdque_;

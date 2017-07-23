@@ -16,6 +16,7 @@ class Physics;
 class Graphics {
 public:
     Graphics(string name,shared_ptr<Sprite>sprite) : name_(name),sprite_(sprite) {}
+    virtual ~Graphics() = default;
     virtual void update(shared_ptr<Physics> physics, shared_ptr<Camera> camera);
 protected:
     string name_;

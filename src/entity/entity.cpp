@@ -58,7 +58,6 @@ shared_ptr<Entity> createSkill(string skillName,
     PictureSize imageInfo = getPictureSizeByName(skillName); 
     uint32_t blocks_width = imageInfo.num_of_blocks_width_;
     uint32_t blocks_height = imageInfo.num_of_blocks_height_;
-
     shared_ptr<Model> model(new Model(blocks_width,blocks_height));
     
     shared_ptr<Physics> phy(new SkillPhysics(posx, posy,model));
@@ -66,6 +65,7 @@ shared_ptr<Entity> createSkill(string skillName,
     phy->setSpeed_y(yspeed);
 
     shared_ptr<Sprite> sprite(new SkillSprite(skillName));
+
     shared_ptr<Graphics> grph(new SkillGraphics(skillName,sprite));
 
     shared_ptr<Entity> skill ( new Skill(phy,grph));
