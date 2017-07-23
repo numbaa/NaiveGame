@@ -65,7 +65,6 @@ private:
     void infoUpdate_MOVE_ON(keyvalue_t);
     void infoUpdate_MOVE_OFF(keyvalue_t);
     void infoUpdate_SKILL_ON(keyvalue_t);
-    void skill_Q();
     //void infoUpdate_SKILL_OFF(PlayerPhysics&,keyvalue_t);
     PlayerInput input_;
     uint32_t move_step_x_;

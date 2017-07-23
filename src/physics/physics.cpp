@@ -121,7 +121,7 @@ void PlayerPhysics::infoUpdate_SKILL_ON(keyvalue_t keyvalue)
     switch (keyvalue)
     {
     case SKILL1:
-        skill_Q();
+        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME,x_+20,y_,3,0));
         break;
     default:
         //error();
@@ -193,23 +193,4 @@ void SkillPhysics::update(shared_ptr<Scene> scene, shared_ptr<PhysicalSpace>spac
     }
     posUpdate(space);
     //harms_属性等待PhysicalSpace
-}
-
-void PlayerPhysics::skill_Q()
-{
-    switch (dir_cur_)
-    {
-    case DIR::dir_right:
-        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME,x_+20,y_,3,0));
-        break;
-    case DIR::dir_left:
-        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME, x_-20, y_, -3, 0));
-        break;
-    case DIR::dir_up:
-        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME, x_, y_-40, 0, -3));
-        break;
-    case DIR::dir_down:
-        Scene::getInstance()->addEntity(createSkill(SKILL_1_NAME, x_, y_+40, 0, 3));
-        break;
-    }
 }
